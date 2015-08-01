@@ -4,7 +4,7 @@ var game = require('../game'),
     Phaser = require('phaser').Phaser;
 
 var sprite;
-var aSprite;
+var pukeAbilitySprite;
 var pukeAbility = 0;
 var controls = {};
 var testMap;
