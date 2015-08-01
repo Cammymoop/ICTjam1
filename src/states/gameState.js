@@ -174,6 +174,7 @@ function updateGameState() {
 function gameOver(){
 //TODO you fail
     game.time.events.add(1000, reset);
+    sprite.kill();
 }
 function reset(){
     game.state.start("gameState");
@@ -184,7 +185,6 @@ function handleA(){
     if (pukeAbility > 100) {
         pukeAbility = 100;
     }
-    console.log('Puke Ability = ' + pukeAbility + '%');
 }
 
 
@@ -243,7 +243,7 @@ baddies[a].kill();
 function bulletColide(){
     this.body.velocity.x = 600 * this.facing;
     game.physics.arcade.collide(this, layer);
-    if(game.physics.arcade.collide(this, baddies[0])){ killBaddy(0);}
+    if(game.physics.arcade.collide(this, baddies[0])){console.log('QAZ'); killBaddy(0);}
 
     if (!this.body.touching.none) {
         this.facing = this.facing * -1;
