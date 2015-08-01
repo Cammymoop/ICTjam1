@@ -5,6 +5,7 @@ var game = require('../game'),
 
 var sprite;
 var aSprite;
+var pukeAbility = 0;
 var controls = {};
 var testMap;
 var puker = 1;
@@ -37,8 +38,6 @@ function createGameState() {
     sprite.animations.add('stand', [6]);
 
     sprite.animations.play('walk', 60, true);
-    aSprite = game.add.sprite(1000, 400, 'aSprite');
-    aSprite.scale.setTo(0.5, 0.5);
 
 
     game.physics.arcade.enable(sprite);
@@ -84,6 +83,7 @@ function createGameState() {
     controls.run = game.input.keyboard.addKey(Phaser.Keyboard.X);
     controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     populateBaddies();
+    makeTokens();
 }
 
 function updateGameState() {
@@ -150,7 +150,8 @@ function updateGameState() {
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
         sprite.body.velocity.y -= 20;
     }
-    if(puker % 4 == 0){
+    //if(puker % 4 == 0){
+    if(pukeAbility > 70) {
        puke();
     }
 
@@ -161,6 +162,12 @@ function updateGameState() {
         emitter.x = sprite.x+10;
         emitter.y = sprite.y;
     }
+
+    pukeAbility -= 1;
+    if (pukeAbility < 0) {
+        pukeAbility = 0
+    }
+
  if(sprite.body.y > 700){gameOver();}
 }
 
@@ -173,7 +180,11 @@ function reset(){
 }
 
 function handleA(){
-    console.log('got it!');
+    pukeAbility += 5;
+    if (pukeAbility > 100) {
+        pukeAbility = 100;
+    }
+    console.log('Puke Ability = ' + pukeAbility + '%');
 }
 
 
@@ -198,6 +209,14 @@ function puke(){
 }
 function endHover(){
     this.body.gravity.y = 1000;
+}
+
+function makeTokens() {
+    aSprite = game.add.sprite(1000, 400, 'aSprite');
+    aSprite.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(aSprite);
+    //baddy.update = baddyColide;
+    aSprite.body.allowGravity = false;
 }
 
 function bulletDeath(){
