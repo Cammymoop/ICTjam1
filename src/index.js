@@ -10,5 +10,5 @@ var states = require('./states');
 
 
 
-game.state.start('boot');
+game.state.start('preloader');
 
