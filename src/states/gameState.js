@@ -4,6 +4,7 @@ var game = require('../game'),
     Phaser = require('phaser').Phaser;
 
 var sprite;
+var iAmHovering = false;
 var pukeAbilitySprite;
 var hoverAbilitySprite;
 var pukeAbility = 0;
@@ -155,12 +156,10 @@ function updateGameState() {
     }
     //if(puker % 4 == 0){
     if(pukeAbility > 70) {
-        ability = 0;
        puke();
     }
     if(hoverAbility > 100) {
-        ability = 1;
-        puke()
+        hover()
     }
 
     if (emitting) {
@@ -210,24 +209,30 @@ function handleHoverSprite(){
 
 function puke(){
     puker = 1;
-    if(ability == 0){
         var bullet = game.add.sprite(sprite.x, sprite.y + 30, 'test2');
         game.physics.arcade.enable(bullet);
         bullet.update = bulletColide;
         bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
         game.time.events.add(5000, bulletDeath, bullet);
-    }else if (ability == 1){
+    emitting = true;
+    game.time.events.add(1000, function() {emitting = false;});
+    }
+function hover() {
+    if (iAmHovering) {
+        console.log ('Nice try.')
+    } else {
+        iAmHovering = true;
         sprite.body.gravity.y = 0;
         sprite.body.velocity.y = 0;
         sprite.body.y = sprite.body.y - 10;
         game.time.events.add(1500, endHover, sprite);
     }
-    emitting = true;
-    game.time.events.add(1000, function() {emitting = false;});
 }
+
 function endHover(){
     this.body.gravity.y = 1000;
+    iAmHovering = false;
 }
 
 function makeTokens() {
