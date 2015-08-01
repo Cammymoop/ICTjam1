@@ -17,13 +17,21 @@ function createGameState() {
     sprite.scale.setTo(2, 4);
 
     game.physics.arcade.enable(sprite);
+    sprite.body.collideWorldBounds = true;
+    game.physics.arcade.gravity.y = 300;
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
+    sprite.body.drag.y = 370;
     sprite.running = false;
+    game.physics.enable(sprite, Phaser.Physics.ARCADE);
+    sprite.body.gravity.y = 1000;
+
+
 
     controls.left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     controls.right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
     controls.run = game.input.keyboard.addKey(Phaser.Keyboard.X);
+    controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function updateGameState() {
@@ -43,6 +51,15 @@ function updateGameState() {
     }
     if (controls.right.isDown) {
         sprite.body.velocity.x += 50;
+    }
+    if(sprite.y > 510 && controls.jump.isDown){
+       sprite.body.velocity.y = -500; 
+       if(sprite.running){
+           sprite.body.velocity.y -= 100; 
+       }
+    }
+    else if (controls.jump.isDown && sprite.body.velocity.y < -300){
+        sprite.body.velocity.y -= 20;
     }
 }
 
