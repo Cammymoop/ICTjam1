@@ -47,7 +47,7 @@ function createGameState() {
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
-    counter = game.add.sprite(0, 0, 'test2.png');
+    counter = game.add.sprite(0, 0, 'test2');
 counter.fixedToCamera = true;
 counter.scale.x = 5;
 
@@ -104,13 +104,16 @@ counter.scale.x = 5;
 }
 
 function updateGameState() {
-var rectangle = new Phaser.Rectangle(0,0,32*(charge/25),32);
+    var rectangle = new Phaser.Rectangle(0,0,32*(charge/70),32);
 
-counter.crop(rectangle);
-if(Math.random() > 0.5) charge++;
-if(Math.random() < 0.5) charge--;
-if(charge > 25) {abilityTrigger(); charge = charge - 25;}
-if(charge < 0) {charge = 0;}
+    counter.crop(rectangle);
+    if(Math.random() > 0.5) {
+        charge += 0.2;
+    } else {
+        charge -= 0.2;
+    }
+    if(charge > 70) {abilityTrigger(); charge = charge - 70;}
+    if(charge < 0) {charge = 0;}
 
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
@@ -127,8 +130,11 @@ if(charge < 0) {charge = 0;}
         sprite.body.maxVelocity.x = 400;
         sprite.body.drag.x = 370;
     }
+    if (sprite.running) {
+        charge += Math.random() * 0.5;
+    }
 
-charge = charge + (Math.abs(sprite.body.velocity.x)/500);
+    charge = charge + (Math.abs(sprite.body.velocity.x)/500);
     var moving = false;
     if (controls.left.isDown) {
         moving = true;
@@ -155,9 +161,7 @@ charge = charge + (Math.abs(sprite.body.velocity.x)/500);
         }
     }
     if (!moving) {
-charge--;
-charge--;
-charge--;
+        charge -= 0.1;
         if (sprite.animations.currentAnim.name !== 'stand') {
             sprite.animations.play('stand');
         }
@@ -167,8 +171,8 @@ charge--;
         }
     }
     if(jumper > 0) {jumper--;}
-else {charge--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
+        charge += Math.random() * 4;
        jumper = 20;
        sprite.body.velocity.y = -700;
        if(sprite.running){
@@ -177,8 +181,7 @@ else {charge--;}
        puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
-charge++;
-charge++;
+        charge += 0.5;
         sprite.body.velocity.y -= 20;
     }
     //if(puker % 4 == 0){
@@ -238,8 +241,13 @@ ability = 1;
 }
 
 function abilityTrigger(){
-if(ability == 0) puke();
-else if (ability == 1) hover();
+    if(ability == 0) {
+        puke();
+    } else if (ability == 1) {
+        hover();
+    }
+    emitting = true;
+    game.time.events.add(1000, function() {emitting = false;});
 }
 
 function puke(){
@@ -250,8 +258,6 @@ function puke(){
         bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
         game.time.events.add(5000, bulletDeath, bullet);
-    emitting = true;
-    game.time.events.add(1000, function() {emitting = false;});
     }
 function hover() {
     if (iAmHovering) {
