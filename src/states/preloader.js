@@ -10,6 +10,7 @@ function loadStuff() {
         "use strict";
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
+        game.load.image('hoverAbilitySprite', 'img/a.png');
         game.load.image('test2', 'img/testPNG.png');
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
 

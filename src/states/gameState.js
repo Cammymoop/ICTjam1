@@ -5,7 +5,9 @@ var game = require('../game'),
 
 var sprite;
 var pukeAbilitySprite;
+var hoverAbilitySprite;
 var pukeAbility = 0;
+var hoverAbility = 0;
 var controls = {};
 var testMap;
 var puker = 1;
@@ -89,7 +91,8 @@ function createGameState() {
 function updateGameState() {
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
-    game.physics.arcade.overlap(sprite, pukeAbilitySprite, handleA);
+    game.physics.arcade.overlap(sprite, pukeAbilitySprite, handlePukeSprite);
+    game.physics.arcade.overlap(sprite, hoverAbilitySprite, handleHoverSprite);
 
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
@@ -152,7 +155,12 @@ function updateGameState() {
     }
     //if(puker % 4 == 0){
     if(pukeAbility > 70) {
+        ability = 0;
        puke();
+    }
+    if(hoverAbility > 100) {
+        ability = 1;
+        puke()
     }
 
     if (emitting) {
@@ -165,7 +173,11 @@ function updateGameState() {
 
     pukeAbility -= 1;
     if (pukeAbility < 0) {
-        pukeAbility = 0
+        pukeAbility = 0;
+    }
+    hoverAbility -= 1;
+    if (hoverAbility < 0) {
+        hoverAbility = 0;
     }
 
  if(sprite.body.y > 700){gameOver();}
@@ -180,10 +192,16 @@ function reset(){
     game.state.start("gameState");
 }
 
-function handleA(){
+function handlePukeSprite(){
     pukeAbility += 5;
     if (pukeAbility > 100) {
         pukeAbility = 100;
+    }
+}
+function handleHoverSprite(){
+    hoverAbility += 5;
+    if (hoverAbility > 1000) {
+        hoverAbility = 1000
     }
 }
 
@@ -217,6 +235,12 @@ function makeTokens() {
     game.physics.arcade.enable(pukeAbilitySprite);
     //baddy.update = baddyColide;
     pukeAbilitySprite.body.allowGravity = false;
+
+    hoverAbilitySprite = game.add.sprite(2000, 400, 'hoverAbilitySprite');
+    hoverAbilitySprite.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(hoverAbilitySprite);
+    //baddy.update = baddyColide;
+    hoverAbilitySprite.body.allowGravity = false;
 }
 
 function bulletDeath(){
