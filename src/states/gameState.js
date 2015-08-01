@@ -12,11 +12,11 @@ var layer;
 var grassyLayer;
 
 function createGameState() {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
     layer = testMap.createLayer('Tile Layer 1');
-    grassyLayer = testMap.createLayer('Grass On Top')
+    grassyLayer = testMap.createLayer('Grass On Top');
 
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
@@ -27,7 +27,7 @@ function createGameState() {
     game.physics.arcade.gravity.y = 300;
 
     game.physics.arcade.collide(sprite, layer);
-    testMap.setCollisionBetween(0, 35);//kjjj
+    testMap.setCollisionBetween(0, 35, true, layer);
 
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
