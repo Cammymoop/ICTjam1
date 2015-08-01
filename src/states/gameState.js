@@ -180,8 +180,8 @@ charge++;
         hover()
     }
 
-    bgParallax.cameraOffset.x = (-(game.camera.x/2)) % 1000;
-    bgParallax2.cameraOffset.x = (-(game.camera.x/2) % 1000) + 1000;
+    bgParallax.cameraOffset.x = (-(game.camera.x/3)) % 1000;
+    bgParallax2.cameraOffset.x = (-(game.camera.x/3) % 1000) + 1000;
 
     if (emitting) {
         emitter.emitParticle();
