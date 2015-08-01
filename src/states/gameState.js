@@ -121,7 +121,7 @@ function updateGameState() {
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
         sprite.body.velocity.y -= 20;
     }
-    if(puker % 3 == 0){
+    if(puker % 4 == 0){
        puke();
     }
 
@@ -140,12 +140,15 @@ function puke(){
         bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
         game.time.events.add(5000, bulletDeath, bullet);
-     }
      }else if (ability == 1){
     sprite.body.gravity.y = 0;
     sprite.body.velocity.y = 0;
     sprite.body.y = sprite.body.y - 10;
+        game.time.events.add(1500, endHover, sprite);
 }
+}
+function endHover(){
+    this.body.gravity.y = 1000;
 }
 
 function bulletDeath(){
