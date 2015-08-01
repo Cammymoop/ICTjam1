@@ -10,6 +10,8 @@ var puker = 1;
 var jumper = 0;
 var layer;
 var grassyLayer;
+var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
+var aCounter = 0;//this keeps track of how close we are to triggering an ability. 
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -86,6 +88,18 @@ function updateGameState() {
 }
 function puke(){
      //sprite.body.velocity.y = 0;
+     puker = 1;
+     if(ability == 0){
+var bullet = game.add.sprite(sprite.body.x, sprite.body.y, 'test2');
+        game.physics.arcade.enable(bullet);
+        bullet.update = bulletColide;
+        bullet.body.allowGravity = false;
+     }
+}
+
+function bulletColide(){
+    this.body.velocity.x = 1000;
+    game.physics.arcade.collide(this, layer);
 }
 
 var gameState = {

@@ -9,6 +9,7 @@ function createPreloader() {
 function loadStuff() {
         "use strict";
         game.load.image('test1', 'img/guy.png');
+        game.load.image('test2', 'img/testPNG.png');
 
         game.load.image('all_small', 'img/all_small.png');
         //this.game.load.image('testTiles', 'img/tilemaptest.png');
