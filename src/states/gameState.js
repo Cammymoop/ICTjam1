@@ -33,11 +33,12 @@ function createGameState() {
     sprite.facing = 1;
 
     sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
+    sprite.animations.add('stand', [6]);
 
     sprite.animations.play('walk', 60, true);
 
     game.physics.arcade.enable(sprite);
-    sprite.body.setSize(40, 144, 6, 20);
+    sprite.body.setSize(40, 144, 6, 14);
     game.physics.arcade.gravity.y = 300;
 
     game.physics.arcade.collide(sprite, layer);
@@ -98,7 +99,9 @@ function updateGameState() {
         emitter.minParticleSpeed.setTo(emitterXvelocity, 0);
     }
 
+    var moving = false;
     if (controls.left.isDown) {
+        moving = true;
         sprite.body.velocity.x -= 50;
         if (sprite.facing === 1) {
             sprite.scale.x = -1;
@@ -110,6 +113,7 @@ function updateGameState() {
         }
     }
     if (controls.right.isDown) {
+        moving = true;
         sprite.body.velocity.x += 50;
         if (sprite.facing === -1) {
             sprite.scale.x = 1;
@@ -118,6 +122,15 @@ function updateGameState() {
         if (emitting) {
             emitter.maxParticleSpeed.x = (emitterXvelocity * sprite.facing) + sprite.body.velocity.x;
             emitter.minParticleSpeed.x = ((emitterXvelocity * sprite.facing)/2) + sprite.body.velocity.x;
+        }
+    }
+    if (!moving) {
+        if (sprite.animations.currentAnim.name !== 'stand') {
+            sprite.animations.play('stand');
+        }
+    } else {
+        if (sprite.animations.currentAnim.name !== 'walk') {
+            sprite.animations.play('walk', 60, true);
         }
     }
     if(jumper > 0) {jumper--;}
@@ -141,7 +154,7 @@ function updateGameState() {
         //emitter.x += 10;
         //emitter.position = sprite.position;
         emitter.x = sprite.x+10;
-        emitter.y = sprite.y+70;
+        emitter.y = sprite.y;
     }
  if(sprite.body.y > 700){gameOver();}   
 }
