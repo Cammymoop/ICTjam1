@@ -62,7 +62,7 @@ function createGameState() {
 
     //emitter.maxParticleSpeed = new Phaser.Point(500,0);
     //emitter.minParticleSpeed = new Phaser.Point(180,0);
-    emitterXvelocity = 500;
+    emitterXvelocity = 700;
     emitter.minParticleSpeed.setTo(emitterXvelocity, 100);
     emitter.maxParticleSpeed.setTo(emitterXvelocity / 2, 600);
 
@@ -140,20 +140,22 @@ function updateGameState() {
     }
 }
 function puke(){
-     puker = 1;
-     if(ability == 0){
+    puker = 1;
+    if(ability == 0){
         var bullet = game.add.sprite(sprite.x, sprite.y + 30, 'test2');
         game.physics.arcade.enable(bullet);
         bullet.update = bulletColide;
         bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
         game.time.events.add(5000, bulletDeath, bullet);
-     }else if (ability == 1){
-    sprite.body.gravity.y = 0;
-    sprite.body.velocity.y = 0;
-    sprite.body.y = sprite.body.y - 10;
+    }else if (ability == 1){
+        sprite.body.gravity.y = 0;
+        sprite.body.velocity.y = 0;
+        sprite.body.y = sprite.body.y - 10;
         game.time.events.add(1500, endHover, sprite);
-}
+    }
+    emitting = true;
+    game.time.events.add(1000, function() {emitting = false;});
 }
 function endHover(){
     this.body.gravity.y = 1000;
