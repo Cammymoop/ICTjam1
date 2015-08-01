@@ -189,6 +189,7 @@ function gameOver(){
     sprite.kill();
 }
 function reset(){
+    baddies = [];
     game.state.start("gameState");
 }
 
@@ -267,7 +268,8 @@ baddies[a].kill();
 function bulletColide(){
     this.body.velocity.x = 600 * this.facing;
     game.physics.arcade.collide(this, layer);
-    if(game.physics.arcade.collide(this, baddies[0])){console.log('QAZ'); killBaddy(0);}
+    if(game.physics.arcade.collide(this, baddies[0])){killBaddy(0);}
+    if(game.physics.arcade.collide(this, baddies[1])){killBaddy(1);}
 
     if (!this.body.touching.none) {
         this.facing = this.facing * -1;
