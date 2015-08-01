@@ -260,6 +260,8 @@ function populateBaddies(){
         game.physics.arcade.enable(baddy);
         baddy.update = baddyColide;
         baddy.body.allowGravity = false;
+        baddy.animations.add('normal', [1, 1, 1, 1, 1, 0]);
+        baddy.animations.play('normal', 1, true);
 baddies.push(baddy);
 }
 function baddyColide(){
