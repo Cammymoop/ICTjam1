@@ -23,6 +23,7 @@ function createGameState() {
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
     sprite.scale.setTo(0.5, 0.5);
+    sprite.facing = 1;
 
     game.physics.arcade.enable(sprite);
     //sprite.body.collideWorldBounds = true;
@@ -66,9 +67,17 @@ function updateGameState() {
 
     if (controls.left.isDown) {
         sprite.body.velocity.x -= 50;
+        if (sprite.facing === 1) {
+            sprite.scale.x = -0.5;
+            sprite.facing = -1;
+        }
     }
     if (controls.right.isDown) {
         sprite.body.velocity.x += 50;
+        if (sprite.facing === -1) {
+            sprite.scale.x = 0.5;
+            sprite.facing = 1;
+        }
     }
     if(jumper > 0) {jumper--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
@@ -87,19 +96,28 @@ function updateGameState() {
     }
 }
 function puke(){
-     //sprite.body.velocity.y = 0;
      puker = 1;
      if(ability == 0){
-var bullet = game.add.sprite(sprite.body.x, sprite.body.y, 'test2');
+        var bullet = game.add.sprite(sprite.x, sprite.y + 30, 'test2');
         game.physics.arcade.enable(bullet);
         bullet.update = bulletColide;
+        bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
+        game.time.events.add(5000, bulletDeath, bullet);
      }
 }
 
+function bulletDeath(){
+    this.kill();
+}
+
 function bulletColide(){
-    this.body.velocity.x = 1000;
+    this.body.velocity.x = 600 * this.facing;
     game.physics.arcade.collide(this, layer);
+
+    if (!this.body.touching.none) {
+        this.facing = this.facing * -1
+    }
 }
 
 var gameState = {
