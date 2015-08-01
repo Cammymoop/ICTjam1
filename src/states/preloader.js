@@ -12,7 +12,7 @@ function loadStuff() {
 
         this.game.load.image('testTiles', 'img/tilemaptest.png');
         this.game.load.image('testTiles', 'img/tilemaptest.png');
-        this.game.load.tilemap('testMap', 'map/maptest.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
 }
 
 function updatePreloader() {

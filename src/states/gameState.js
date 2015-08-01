@@ -19,7 +19,7 @@ function createGameState() {
     sprite.scale.setTo(2, 4);
 
     game.physics.arcade.enable(sprite);
-    sprite.body.collideWorldBounds = true;
+    //sprite.body.collideWorldBounds = true;
     game.physics.arcade.gravity.y = 300;
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
@@ -57,9 +57,9 @@ function updateGameState() {
     if(jumper > 0) {jumper--;}
     if(sprite.y >= 500 && controls.jump.isDown && jumper == 0){
        jumper = 20;
-       sprite.body.velocity.y = -500; 
+       sprite.body.velocity.y = -500;
        if(sprite.running){
-           sprite.body.velocity.y -= 100; 
+           sprite.body.velocity.y -= 100;
        }
        puker++;
     }
