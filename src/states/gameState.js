@@ -6,6 +6,8 @@ var game = require('../game'),
 var sprite;
 var controls = {};
 var testMap;
+var puker = 1;
+var jumper = 0;
 
 function createGameState() {
     testMap = game.add.tilemap('testMap');
@@ -52,15 +54,24 @@ function updateGameState() {
     if (controls.right.isDown) {
         sprite.body.velocity.x += 50;
     }
-    if(sprite.y > 510 && controls.jump.isDown){
+    if(jumper > 0) {jumper--;}
+    if(sprite.y >= 500 && controls.jump.isDown && jumper == 0){
+       jumper = 20;
        sprite.body.velocity.y = -500; 
        if(sprite.running){
            sprite.body.velocity.y -= 100; 
        }
+       puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
         sprite.body.velocity.y -= 20;
     }
+    if(puker % 3 == 0){
+       puke();
+    }
+}
+function puke(){
+     //sprite.body.velocity.y = 0;
 }
 
 var gameState = {
