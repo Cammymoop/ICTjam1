@@ -138,7 +138,15 @@ function updateGameState() {
         emitter.x = sprite.x+10;
         emitter.y = sprite.y+70;
     }
+ if(sprite.body.y > 700){gameOver();}   
 }
+
+function gameOver(){
+    game.state.start("gameState");
+}
+
+
+
 function puke(){
     puker = 1;
     if(ability == 0){
