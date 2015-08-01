@@ -21,6 +21,7 @@ function createGameState() {
     game.physics.arcade.enable(sprite);
     //sprite.body.collideWorldBounds = true;
     game.physics.arcade.gravity.y = 300;
+    game.physics.arcade.collide(sprite, layer);
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
     sprite.body.drag.y = 370;
