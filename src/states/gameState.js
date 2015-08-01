@@ -11,7 +11,7 @@ var jumper = 0;
 var layer;
 var grassyLayer;
 var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
-var aCounter = 0;//this keeps track of how close we are to triggering an ability. 
+var aCounter = 0;//this keeps track of how close we are to triggering an ability.
 var emitter;
 var emitterXvelocity;
 var emitterXvelecoityMoving;
@@ -50,7 +50,7 @@ function createGameState() {
     layer.resizeWorld();
 
 
-    emitter.makeParticles('veggies', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 200, true, true);
+    emitter.makeParticles('vomit', [0,1,2,3], 200, true, true);
 
     // Attach the emitter to the sprite
     //sprite.addChild(emitter);
