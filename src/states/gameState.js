@@ -8,12 +8,13 @@ var controls = {};
 var testMap;
 var puker = 1;
 var jumper = 0;
+var layer;
 
 function createGameState() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('tilemaptest', 'testTiles');
-    var layer = testMap.createLayer('Tile Layer 1');
+    layer = testMap.createLayer('Tile Layer 1');
 
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
@@ -42,6 +43,8 @@ function createGameState() {
 }
 
 function updateGameState() {
+    game.physics.arcade.collide(sprite, layer);
+
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
         sprite.body.maxVelocity.x = 700;
@@ -60,7 +63,7 @@ function updateGameState() {
         sprite.body.velocity.x += 50;
     }
     if(jumper > 0) {jumper--;}
-    if(sprite.y >= 500 && controls.jump.isDown && jumper == 0){
+    if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
        jumper = 20;
        sprite.body.velocity.y = -500;
        if(sprite.running){
