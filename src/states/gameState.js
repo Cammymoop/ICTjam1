@@ -10,12 +10,13 @@ var puker = 1;
 var jumper = 0;
 var layer;
 var grassyLayer;
-var ability = 1;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
+var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
 var aCounter = 0;//this keeps track of how close we are to triggering an ability.
 var emitter;
 var emitting = false;
 var emitterXvelocity;
 var emitterXvelecoityMoving;
+var baddies = [];
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -77,6 +78,7 @@ function createGameState() {
     controls.right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
     controls.run = game.input.keyboard.addKey(Phaser.Keyboard.X);
     controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    populateBaddies();
 }
 
 function updateGameState() {
@@ -175,10 +177,27 @@ function endHover(){
 function bulletDeath(){
     this.kill();
 }
+function populateBaddies(){
+
+    var baddy = game.add.sprite(500, 350, 'test2');
+        game.physics.arcade.enable(baddy);
+        baddy.update = baddyColide;
+        baddy.body.allowGravity = false;
+baddies.push(baddy);
+}
+function baddyColide(){
+
+    game.physics.arcade.collide(this, layer);
+}
+
+function killBaddy(a){
+baddies[a].kill();
+}
 
 function bulletColide(){
     this.body.velocity.x = 600 * this.facing;
     game.physics.arcade.collide(this, layer);
+    if(game.physics.arcade.collide(this, baddies[0])){ killBaddy(0);}
 
     if (!this.body.touching.none) {
         this.facing = this.facing * -1;
