@@ -15,12 +15,14 @@ function loadStuff() {
         game.load.spritesheet('enemy', 'img/enemy.png', 830, 678);
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
 
+        game.load.image('bg', 'img/background.png');
+        game.load.image('bgParallax', 'img/backgroundFront.png');
+
         game.load.image('all_small', 'img/all_small.png');
-        //this.game.load.image('testTiles', 'img/tilemaptest.png');
         game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
 
         this.loadingBar = this.add.sprite(104, 280, 'loadBar');
-        this.loadingBar = this.add.sprite(93, 193, 'loadImage');
+        this.add.sprite(93, 193, 'loadImage');
 
         game.load.setPreloadSprite(this.loadingBar);
 }

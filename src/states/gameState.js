@@ -20,13 +20,21 @@ var aCounter = 0;//this keeps track of how close we are to triggering an ability
 var emitter;
 var emitting = false;
 var emitterXvelocity;
-var emitterXvelecoityMoving;
+var bgParallax;
+var bgParallax2;
 var baddies = [];
 var charge = 20;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.stage.backgroundColor = '#999999';
+
+    var bg = game.add.sprite(0, -300, 'bg');
+    bg.fixedToCamera = true;
+    bgParallax = game.add.sprite(0, 0, 'bgParallax');
+    bgParallax.fixedToCamera = true;
+    bgParallax2 = game.add.sprite(1000, 0, 'bgParallax');
+    bgParallax2.fixedToCamera = true;
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
@@ -110,8 +118,6 @@ if(charge < 0) {charge = 0;}
         sprite.running = false;
         sprite.body.maxVelocity.x = 400;
         sprite.body.drag.x = 370;
-        emitterXvelecoityMoving = emitterXvelocity;
-        emitter.minParticleSpeed.setTo(emitterXvelocity, 0);
     }
 
     var moving = false;
@@ -174,6 +180,9 @@ charge++;
         hover()
     }
 
+    bgParallax.cameraOffset.x = (-(game.camera.x/2)) % 1000;
+    bgParallax2.cameraOffset.x = (-(game.camera.x/2) % 1000) + 1000;
+
     if (emitting) {
         emitter.emitParticle();
         //emitter.x += 10;
@@ -191,7 +200,7 @@ charge++;
         hoverAbility = 0;
     }
 
- if(sprite.body.y > 700){gameOver();}
+    if(sprite.body.y > 700){gameOver();}
 }
 
 function gameOver(){
