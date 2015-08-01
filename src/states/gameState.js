@@ -5,8 +5,13 @@ var game = require('../game'),
 
 var sprite;
 var controls = {};
+var testMap;
 
 function createGameState() {
+    testMap = game.add.tilemap('testMap');
+    testMap.addTilesetImage('testTiles', 'testTiles');
+    var layer = testMap.createLayer('Tile Layer 1');
+
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
     sprite.scale.setTo(2, 4);

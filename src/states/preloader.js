@@ -10,6 +10,9 @@ function loadStuff() {
         "use strict";
         this.game.load.image('test1', 'img/testPNG.png');
 
+        this.game.load.image('testTiles', 'img/tilemaptest.png');
+        this.game.load.image('testTiles', 'img/tilemaptest.png');
+        this.game.load.tilemap('testMap', 'map/maptest.json', null, Phaser.Tilemap.TILED_JSON);
 }
 
 function updatePreloader() {

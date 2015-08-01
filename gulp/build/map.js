@@ -3,8 +3,8 @@
 var gulp = require('gulp');
 
 
-var src = './src/img/*.png',
-  dist = './dist/img';
+var src = './src/map/*.json',
+  dist = './dist/map';
 
 function index() {
   return gulp.src(src)
@@ -12,4 +12,4 @@ function index() {
 }
 
 
-gulp.task('build-img', index);
+gulp.task('build-map', index);
