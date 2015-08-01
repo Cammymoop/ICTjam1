@@ -13,6 +13,7 @@ var grassyLayer;
 var ability = 1;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
 var aCounter = 0;//this keeps track of how close we are to triggering an ability.
 var emitter;
+var emitting = false;
 var emitterXvelocity;
 var emitterXvelecoityMoving;
 
@@ -62,9 +63,8 @@ function createGameState() {
     //emitter.maxParticleSpeed = new Phaser.Point(500,0);
     //emitter.minParticleSpeed = new Phaser.Point(180,0);
     emitterXvelocity = 500;
-    emitterXvelecoityMoving = emitterXvelocity;
-    emitter.minParticleSpeed.setTo(emitterXvelocity, 0);
-    emitter.maxParticleSpeed.setTo(emitterXvelocity / 2, 0);
+    emitter.minParticleSpeed.setTo(emitterXvelocity, 100);
+    emitter.maxParticleSpeed.setTo(emitterXvelocity / 2, 600);
 
     emitter.gravity = 1;
     emitter.bounce.setTo(0.5, 0.5);
@@ -99,6 +99,10 @@ function updateGameState() {
             sprite.scale.x = -0.5;
             sprite.facing = -1;
         }
+        if (emitting) {
+            emitter.maxParticleSpeed.x = (emitterXvelocity * sprite.facing) + sprite.body.velocity.x;
+            emitter.minParticleSpeed.x = ((emitterXvelocity * sprite.facing)/2) + sprite.body.velocity.x;
+        }
     }
     if (controls.right.isDown) {
         sprite.body.velocity.x += 50;
@@ -106,8 +110,10 @@ function updateGameState() {
             sprite.scale.x = 0.5;
             sprite.facing = 1;
         }
-        emitterXvelecoityMoving+=10;
-        emitter.minParticleSpeed.setTo(emitterXvelecoityMoving, 0);
+        if (emitting) {
+            emitter.maxParticleSpeed.x = (emitterXvelocity * sprite.facing) + sprite.body.velocity.x;
+            emitter.minParticleSpeed.x = ((emitterXvelocity * sprite.facing)/2) + sprite.body.velocity.x;
+        }
     }
     if(jumper > 0) {jumper--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
@@ -125,11 +131,13 @@ function updateGameState() {
        puke();
     }
 
-    emitter.emitParticle();
-    //emitter.x += 10;
-    //emitter.position = sprite.position;
-    emitter.x = sprite.x+10;
-    emitter.y = sprite.y+70;
+    if (emitting) {
+        emitter.emitParticle();
+        //emitter.x += 10;
+        //emitter.position = sprite.position;
+        emitter.x = sprite.x+10;
+        emitter.y = sprite.y+70;
+    }
 }
 function puke(){
      puker = 1;
@@ -160,7 +168,7 @@ function bulletColide(){
     game.physics.arcade.collide(this, layer);
 
     if (!this.body.touching.none) {
-        this.facing = this.facing * -1
+        this.facing = this.facing * -1;
     }
 }
 
