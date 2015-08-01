@@ -8,11 +8,16 @@ function createPreloader() {
 
 function loadStuff() {
         "use strict";
-        this.game.load.image('test1', 'img/guy.png');
+        game.load.image('test1', 'img/guy.png');
 
-        this.game.load.image('all_small', 'img/all_small.png');
+        game.load.image('all_small', 'img/all_small.png');
         //this.game.load.image('testTiles', 'img/tilemaptest.png');
-        this.game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
+
+        this.loadingBar = this.add.sprite(104, 280, 'loadBar');
+        this.loadingBar = this.add.sprite(93, 193, 'loadImage');
+
+        game.load.setPreloadSprite(this.loadingBar);
 }
 
 function updatePreloader() {
