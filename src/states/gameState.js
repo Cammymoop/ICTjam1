@@ -254,7 +254,9 @@ function bulletDeath(){
 }
 function populateBaddies(){
 
-    var baddy = game.add.sprite(500, 345, 'test2');
+    var baddy = game.add.sprite(1500, 345, 'enemy');
+        baddy.scale.setTo(0.5, 0.5);
+        baddy.anchor.setTo(0.5, 0.5);
         game.physics.arcade.enable(baddy);
         baddy.update = baddyColide;
         baddy.body.allowGravity = false;

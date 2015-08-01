@@ -12,6 +12,7 @@ function loadStuff() {
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/a.png');
         game.load.image('test2', 'img/testPNG.png');
+        game.load.image('enemy', 'img/enemy.png');
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
 
         game.load.image('all_small', 'img/all_small.png');
