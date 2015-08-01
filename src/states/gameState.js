@@ -22,6 +22,7 @@ function createGameState() {
     //sprite.body.collideWorldBounds = true;
     game.physics.arcade.gravity.y = 300;
     game.physics.arcade.collide(sprite, layer);
+    map.setCollisionBetween(0, 1);
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
     sprite.body.drag.y = 370;
@@ -65,7 +66,7 @@ function updateGameState() {
        puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
-        sprite.body.velocity.y -= 20;
+        sprite.body.velocity.y -= 50;
     }
     if(puker % 3 == 0){
        puke();
