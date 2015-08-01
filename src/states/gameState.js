@@ -160,6 +160,10 @@ function updateGameState() {
 }
 
 function gameOver(){
+//TODO you fail
+    game.time.events.add(1000, reset);
+}
+function reset(){
     game.state.start("gameState");
 }
 
