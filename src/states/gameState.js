@@ -9,16 +9,18 @@ var testMap;
 var puker = 1;
 var jumper = 0;
 var layer;
+var grassyLayer;
 
 function createGameState() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
     testMap = game.add.tilemap('testMap');
-    testMap.addTilesetImage('tilemaptest', 'testTiles');
+    testMap.addTilesetImage('all_small', 'all_small');
     layer = testMap.createLayer('Tile Layer 1');
+    grassyLayer = testMap.createLayer('Grass On Top')
 
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
-    sprite.scale.setTo(2, 4);
+    sprite.scale.setTo(0.5, 0.5);
 
     game.physics.arcade.enable(sprite);
     //sprite.body.collideWorldBounds = true;

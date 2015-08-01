@@ -8,10 +8,10 @@ function createPreloader() {
 
 function loadStuff() {
         "use strict";
-        this.game.load.image('test1', 'img/testPNG.png');
+        this.game.load.image('test1', 'img/guy.png');
 
-        this.game.load.image('testTiles', 'img/tilemaptest.png');
-        this.game.load.image('testTiles', 'img/tilemaptest.png');
+        this.game.load.image('all_small', 'img/all_small.png');
+        //this.game.load.image('testTiles', 'img/tilemaptest.png');
         this.game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
 }
 
