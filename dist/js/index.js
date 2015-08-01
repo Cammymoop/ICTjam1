@@ -56,7 +56,7 @@
 	
 	
 	
-	game.state.start('boot');
+	game.state.start('preloader');
 	
 
 
@@ -122706,14 +122706,16 @@
 
 	
 	
-	var boot = __webpack_require__(67);
+	var preloader = __webpack_require__(67);
+	var gameState = __webpack_require__(68);
 	
 	
 	
 	
 	
 	
-	game.state.add('boot', boot);
+	game.state.add('preloader', preloader);
+	game.state.add('gameState', gameState);
 	
 	
 
@@ -122722,52 +122724,61 @@
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var game = __webpack_require__(1),
 	  Phaser = __webpack_require__(64).Phaser;
 	
-	var fragmentSrc = __webpack_require__(68);
-	
-	var filter,
-	  sprite;
-	
-	function createBootState() {
-	
-	  var headerText = 'Boot State';
-	
-	  var headerTextStyle = {
-	    font: '26pt Helvetica',
-	    fill: '#e0e4f0',
-	    align: 'center'
-	  };
-	
-	  filter = new Phaser.Filter(game, null, fragmentSrc);
-	  filter.setResolution(800, 800);
-	
-	  sprite = game.add.sprite();
-	  sprite.width = 800;
-	  sprite.height = 800;
-	  sprite.filters = [filter];
-	
-	  var headText = game.add.text(game.world.centerX, 32, headerText, headerTextStyle);
+	function createPreloader() {
 	}
 	
-	function updateBootState() {
-	  filter.update(game.input.activePointer);
+	function loadStuff() {
+	        "use strict";
+	        this.game.load.image('test1', 'img/testPNG.png');
+	
 	}
 	
-	var boot = {
-	  create: createBootState,
-	  update: updateBootState
+	function updatePreloader() {
+	    game.state.start("gameState");
+	}
+	
+	var preloader = {
+	  create: createPreloader,
+	  update: updatePreloader,
+	  preload: loadStuff
 	};
 	
-	module.exports = boot;
+	module.exports = preloader;
 
 
 /***/ },
 /* 68 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports=["#ifdef GL_ES","precision mediump float;","#endif","uniform float time;","uniform vec2 mouse;","uniform vec2 resolution;","void main( void ) {","float treshhold = 200.;","vec2 position = gl_FragCoord.xy - mouse.xy * resolution.xy;","float rad = sqrt(position.x * position.x + position.y * position.y) ;","float amp = (treshhold-rad)/treshhold;","if(amp<0.0){ amp=0.0;}","float gray = (sin(rad/ 10. - time * 3.)+0.5)*amp;","gl_FragColor = vec4(gray,gray,gray, 1.0 );","}"];
+	'use strict';
+	
+	var game = __webpack_require__(1),
+	  Phaser = __webpack_require__(64).Phaser;
+	
+	var sprite;
+	
+	function createGameState() {
+	  sprite = game.add.sprite(200, 200, 'test1');
+	  sprite.anchor.setTo(0.5, 0.5);
+	  sprite.scale.setTo(4, 4);
+	}
+	
+	function updateGameState() {
+	    sprite.angle += 2;
+	}
+	
+	var gameState = {
+	  create: createGameState,
+	  update: updateGameState
+	};
+	
+	module.exports = gameState;
+
 
 /***/ }
 /******/ ]);
