@@ -4,6 +4,7 @@ var game = require('../game'),
     Phaser = require('phaser').Phaser;
 
 var sprite;
+var aSprite;
 var controls = {};
 var testMap;
 var puker = 1;
@@ -35,6 +36,9 @@ function createGameState() {
     sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
 
     sprite.animations.play('walk', 60, true);
+    aSprite = game.add.sprite(1000, 400, 'aSprite');
+    aSprite.scale.setTo(0.5, 0.5);
+
 
     game.physics.arcade.enable(sprite);
     sprite.body.setSize(40, 144, 6, 20);
@@ -84,6 +88,7 @@ function createGameState() {
 function updateGameState() {
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
+    game.physics.arcade.overlap(sprite, aSprite, handleA);
 
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
@@ -143,11 +148,15 @@ function updateGameState() {
         emitter.x = sprite.x+10;
         emitter.y = sprite.y+70;
     }
- if(sprite.body.y > 700){gameOver();}   
+ if(sprite.body.y > 700){gameOver();}
 }
 
 function gameOver(){
     game.state.start("gameState");
+}
+
+function handleA(){
+    console.log('got it!');
 }
 
 
