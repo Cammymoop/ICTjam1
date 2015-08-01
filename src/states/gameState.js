@@ -36,6 +36,10 @@ function createGameState() {
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
     sprite.body.gravity.y = 1000;
 
+    game.camera.follow(sprite);
+    layer.resizeWorld();
+
+
 
 
     controls.left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
