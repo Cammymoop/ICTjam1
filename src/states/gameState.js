@@ -22,7 +22,7 @@ function createGameState() {
     //sprite.body.collideWorldBounds = true;
     game.physics.arcade.gravity.y = 300;
     game.physics.arcade.collide(sprite, layer);
-    map.setCollisionBetween(0, 1);
+    testMap.setCollisionBetween(0, 30);
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
     sprite.body.drag.y = 370;
