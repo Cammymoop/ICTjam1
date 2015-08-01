@@ -12,6 +12,9 @@ var layer;
 var grassyLayer;
 var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
 var aCounter = 0;//this keeps track of how close we are to triggering an ability. 
+var emitter;
+var emitterXvelocity;
+var emitterXvelecoityMoving;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -20,6 +23,7 @@ function createGameState() {
     layer = testMap.createLayer('Tile Layer 1');
     grassyLayer = testMap.createLayer('Grass On Top');
 
+    emitter = game.add.emitter(0, 0, 1);
     sprite = game.add.sprite(200, 200, 'test1');
     sprite.anchor.setTo(0.5, 0.5);
     sprite.scale.setTo(0.5, 0.5);
@@ -30,7 +34,10 @@ function createGameState() {
     game.physics.arcade.gravity.y = 300;
 
     game.physics.arcade.collide(sprite, layer);
-    testMap.setCollisionBetween(0, 35, true, layer);
+    testMap.setCollisionBetween(7, 10, true, layer);
+    testMap.setCollisionBetween(12, 16, true, layer);
+    testMap.setCollisionBetween(18, 22, true, layer);
+    testMap.setCollisionBetween(25, 28, true, layer);
 
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
@@ -43,7 +50,25 @@ function createGameState() {
     layer.resizeWorld();
 
 
+    emitter.makeParticles('veggies', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 200, true, true);
 
+    // Attach the emitter to the sprite
+    //sprite.addChild(emitter);
+
+    //position the emitter relative to the sprite's anchor location
+    emitter.y = 100;
+    emitter.x = -250;
+
+    //emitter.maxParticleSpeed = new Phaser.Point(500,0);
+    //emitter.minParticleSpeed = new Phaser.Point(180,0);
+    emitterXvelocity = 500;
+    emitterXvelecoityMoving = emitterXvelocity;
+    emitter.minParticleSpeed.setTo(emitterXvelocity, 0);
+    emitter.maxParticleSpeed.setTo(emitterXvelocity / 2, 0);
+
+    emitter.gravity = 1;
+    emitter.bounce.setTo(0.5, 0.5);
+    emitter.angularDrag = 0;
 
     controls.left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     controls.right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
@@ -53,6 +78,7 @@ function createGameState() {
 
 function updateGameState() {
     game.physics.arcade.collide(sprite, layer);
+    game.physics.arcade.collide(emitter, layer);
 
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
@@ -63,6 +89,8 @@ function updateGameState() {
         sprite.running = false;
         sprite.body.maxVelocity.x = 400;
         sprite.body.drag.x = 370;
+        emitterXvelecoityMoving = emitterXvelocity;
+        emitter.minParticleSpeed.setTo(emitterXvelocity, 0);
     }
 
     if (controls.left.isDown) {
@@ -78,6 +106,8 @@ function updateGameState() {
             sprite.scale.x = 0.5;
             sprite.facing = 1;
         }
+        emitterXvelecoityMoving+=10;
+        emitter.minParticleSpeed.setTo(emitterXvelecoityMoving, 0);
     }
     if(jumper > 0) {jumper--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
@@ -94,6 +124,12 @@ function updateGameState() {
     if(puker % 3 == 0){
        puke();
     }
+
+    emitter.emitParticle();
+    //emitter.x += 10;
+    //emitter.position = sprite.position;
+    emitter.x = sprite.x+10;
+    emitter.y = sprite.y+70;
 }
 function puke(){
      puker = 1;
