@@ -89,7 +89,7 @@ function createGameState() {
 function updateGameState() {
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
-    game.physics.arcade.overlap(sprite, aSprite, handleA);
+    game.physics.arcade.overlap(sprite, pukeAbilitySprite, handleA);
 
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
@@ -212,11 +212,11 @@ function endHover(){
 }
 
 function makeTokens() {
-    aSprite = game.add.sprite(1000, 400, 'aSprite');
-    aSprite.scale.setTo(0.5, 0.5);
-    game.physics.arcade.enable(aSprite);
+    pukeAbilitySprite = game.add.sprite(1000, 400, 'pukeAbilitySprite');
+    pukeAbilitySprite.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(pukeAbilitySprite);
     //baddy.update = baddyColide;
-    aSprite.body.allowGravity = false;
+    pukeAbilitySprite.body.allowGravity = false;
 }
 
 function bulletDeath(){
