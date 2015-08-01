@@ -22,6 +22,7 @@ var emitting = false;
 var emitterXvelocity;
 var emitterXvelecoityMoving;
 var baddies = [];
+var charge = 20;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -58,7 +59,7 @@ function createGameState() {
     sprite.body.drag.y = 370;
     sprite.running = false;
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
-    sprite.body.gravity.y = 1000;
+    sprite.body.gravity.y = 2000;
 
     game.camera.follow(sprite);
     layer.resizeWorld();
@@ -90,6 +91,11 @@ function createGameState() {
 }
 
 function updateGameState() {
+if(Math.random() > 0.5) charge++;
+if(Math.random() < 0.5) charge--;
+if(charge > 25) {abilityTrigger(); charge = charge - 25;}
+if(charge < 0) {charge = 0;}
+
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
     game.physics.arcade.overlap(sprite, pukeAbilitySprite, handlePukeSprite);
@@ -134,6 +140,9 @@ function updateGameState() {
         }
     }
     if (!moving) {
+charge--;
+charge--;
+charge--;
         if (sprite.animations.currentAnim.name !== 'stand') {
             sprite.animations.play('stand');
         }
@@ -143,15 +152,18 @@ function updateGameState() {
         }
     }
     if(jumper > 0) {jumper--;}
+else {charge--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
        jumper = 20;
-       sprite.body.velocity.y = -500;
+       sprite.body.velocity.y = -700;
        if(sprite.running){
-           sprite.body.velocity.y -= 100;
+           sprite.body.velocity.y -= 150;
        }
        puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
+charge++;
+charge++;
         sprite.body.velocity.y -= 20;
     }
     //if(puker % 4 == 0){
@@ -194,18 +206,23 @@ function reset(){
 
 function handlePukeSprite(){
     pukeAbility += 5;
+ability = 0;
     if (pukeAbility > 100) {
         pukeAbility = 100;
     }
 }
 function handleHoverSprite(){
+ability = 1;
     hoverAbility += 5;
     if (hoverAbility > 1000) {
         hoverAbility = 1000
     }
 }
 
-
+function abilityTrigger(){
+if(ability == 0) puke();
+else if (ability == 1) hover();
+}
 
 function puke(){
     puker = 1;
@@ -220,7 +237,6 @@ function puke(){
     }
 function hover() {
     if (iAmHovering) {
-        console.log ('Nice try.')
     } else {
         iAmHovering = true;
         sprite.body.gravity.y = 0;
@@ -231,7 +247,7 @@ function hover() {
 }
 
 function endHover(){
-    this.body.gravity.y = 1000;
+    this.body.gravity.y = 2000;
     iAmHovering = false;
 }
 
@@ -271,6 +287,7 @@ function baddyColide(){
 }
 
 function killBaddy(a){
+  charge = charge + 100; 
 baddies[a].kill();
 }
 
