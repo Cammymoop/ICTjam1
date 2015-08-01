@@ -9,7 +9,7 @@ var testMap;
 
 function createGameState() {
     testMap = game.add.tilemap('testMap');
-    testMap.addTilesetImage('testTiles', 'testTiles');
+    testMap.addTilesetImage('tilemaptest', 'testTiles');
     var layer = testMap.createLayer('Tile Layer 1');
 
     sprite = game.add.sprite(200, 200, 'test1');
