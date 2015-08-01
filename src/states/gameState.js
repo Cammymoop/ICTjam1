@@ -10,7 +10,7 @@ var puker = 1;
 var jumper = 0;
 var layer;
 var grassyLayer;
-var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
+var ability = 1;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
 var aCounter = 0;//this keeps track of how close we are to triggering an ability.
 var emitter;
 var emitterXvelocity;
@@ -141,6 +141,11 @@ function puke(){
         bullet.body.allowGravity = false;
         game.time.events.add(5000, bulletDeath, bullet);
      }
+     }else if (ability == 1){
+    sprite.body.gravity.y = 0;
+    sprite.body.velocity.y = 0;
+    sprite.body.y = sprite.body.y - 10;
+}
 }
 
 function bulletDeath(){
