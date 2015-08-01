@@ -19,26 +19,31 @@ var emitterXvelecoityMoving;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.stage.backgroundColor = '#999999';
+
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
     layer = testMap.createLayer('Tile Layer 1');
     grassyLayer = testMap.createLayer('Grass On Top');
 
     emitter = game.add.emitter(0, 0, 1);
-    sprite = game.add.sprite(200, 200, 'test1');
-    sprite.anchor.setTo(0.5, 0.5);
-    sprite.scale.setTo(0.5, 0.5);
+    sprite = game.add.sprite(200, 200, 'player');
+    sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
+    sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
+
+    sprite.animations.play('walk', 60, true);
+
     game.physics.arcade.enable(sprite);
-    //sprite.body.collideWorldBounds = true;
+    sprite.body.setSize(40, 144, 6, 20);
     game.physics.arcade.gravity.y = 300;
 
     game.physics.arcade.collide(sprite, layer);
-    testMap.setCollisionBetween(7, 10, true, layer);
-    testMap.setCollisionBetween(12, 16, true, layer);
-    testMap.setCollisionBetween(18, 22, true, layer);
-    testMap.setCollisionBetween(25, 28, true, layer);
+    testMap.setCollisionBetween(8, 11, true, layer);
+    testMap.setCollisionBetween(13, 17, true, layer);
+    testMap.setCollisionBetween(19, 23, true, layer);
+    testMap.setCollisionBetween(26, 29, true, layer);
 
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
@@ -60,8 +65,6 @@ function createGameState() {
     emitter.y = 100;
     emitter.x = -250;
 
-    //emitter.maxParticleSpeed = new Phaser.Point(500,0);
-    //emitter.minParticleSpeed = new Phaser.Point(180,0);
     emitterXvelocity = 700;
     emitter.minParticleSpeed.setTo(emitterXvelocity, 100);
     emitter.maxParticleSpeed.setTo(emitterXvelocity / 2, 600);
@@ -96,7 +99,7 @@ function updateGameState() {
     if (controls.left.isDown) {
         sprite.body.velocity.x -= 50;
         if (sprite.facing === 1) {
-            sprite.scale.x = -0.5;
+            sprite.scale.x = -1;
             sprite.facing = -1;
         }
         if (emitting) {
@@ -107,7 +110,7 @@ function updateGameState() {
     if (controls.right.isDown) {
         sprite.body.velocity.x += 50;
         if (sprite.facing === -1) {
-            sprite.scale.x = 0.5;
+            sprite.scale.x = 1;
             sprite.facing = 1;
         }
         if (emitting) {

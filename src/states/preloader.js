@@ -9,6 +9,7 @@ function createPreloader() {
 function loadStuff() {
         "use strict";
         game.load.image('test1', 'img/guy.png');
+        game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('test2', 'img/testPNG.png');
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
 
