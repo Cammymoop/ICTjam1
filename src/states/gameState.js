@@ -161,12 +161,13 @@ function updateGameState() {
             emitter.minParticleSpeed.x = ((emitterXvelocity * sprite.facing)/2) + sprite.body.velocity.x;
         }
     }
-    if (!moving) {
+    if (!moving && !Math.abs(sprite.body.velocity.y)) {
         charge -= 0.1;
         if (sprite.animations.currentAnim.name !== 'stand') {
             sprite.animations.play('stand');
         }
     } else {
+if(Math.abs(sprite.body.velocity.y) > 100){charge += 1;}
         if (sprite.animations.currentAnim.name !== 'walk') {
             sprite.animations.play('walk', 60, true);
         }
@@ -213,7 +214,7 @@ function updateGameState() {
         hoverAbility = 0;
     }
 
-    if(sprite.body.y > 700){gameOver();}
+    if(sprite.body.y > 1300){gameOver();}
 }
 
 function gameOver(){
