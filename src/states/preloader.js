@@ -37,6 +37,7 @@ function loadStuff() {
         game.load.spritesheet('squid', 'img/squid.png', 533, 242);
 
         game.load.spritesheet('death', 'img/POOF.png', 500, 500);
+        game.load.spritesheet('apple', 'img/apple.png', 200, 200);
 
         game.load.image('gameOver1', 'img/youFailONE.png');
         game.load.image('gameOver2', 'img/youFailTWO.png');

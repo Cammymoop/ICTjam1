@@ -32,6 +32,8 @@ var music;
 var mutePushed;
 var musicMute = false;
 var sun;
+var healthApple;
+var tookDamage;
 
 function createGameState() {
 ability = 0;
@@ -133,6 +135,14 @@ counterBackground.scale.y = 0.5;
     populateBaddies();
     makeTokens();
     iAmHovering = false;
+
+    sprite.health = 3;
+    healthApple = game.add.sprite(960, 10, 'apple');
+    healthApple.anchor.setTo(1, 0);
+    healthApple.scale.setTo(0.4, 0.4);
+    healthApple.fixedToCamera = true;
+
+    tookDamage = false;
 }
 
 function updateGameState() {
@@ -270,6 +280,21 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     if(sprite.body.y > 1300){gameOver();}
     // TODO: Remove for Production:
     game.debug.bodyInfo(sprite, 16, 24);
+}
+
+function playerDamage() {
+    if (!tookDamage) {
+        tookDamage = true;
+        game.time.events.add(700, function() {tookDamage = false;});
+        sfx.b1.play();
+        if (sprite.health === 1) {
+            healthApple.kill();
+            gameOver();
+            return;
+        }
+        sprite.health--;
+        healthApple.frame = -(sprite.health) + 3;
+    }
 }
 
 function gameOver(){
@@ -460,7 +485,7 @@ function modifyCharge(value, abs) {
 
 function baddyColide(){
 if(sprite.body.x > 800) {this.body.velocity.x = -400;}
-    if(game.physics.arcade.collide(this, sprite)){gameOver();}
+    if(game.physics.arcade.collide(this, sprite)){playerDamage();}
     game.physics.arcade.collide(this, layer);
 }
 
