@@ -5,9 +5,8 @@ var game = require('../game'),
 
 var sprite;
 var iAmHovering = false;
-var pukeAbilitySprite;
-var pukeAbilitySprite2;
-var hoverAbilitySprite;
+var pukeAbilitySprite, pukeAbilitySprite2, pukeAbilitySprite3;
+var hoverAbilitySprite, hoverAbilitySprite2;
 var pukeAbility = 0;
 var hoverAbility = 0;
 var controls = {};
@@ -62,7 +61,9 @@ ability = 0;
     grassyLayer = testMap.createLayer('Grass On Top');
 
     emitter = game.add.emitter(0, 0, 1);
+    // TODO: Set start back to normal for production
     sprite = game.add.sprite(200, 200, 'player');
+    //sprite = game.add.sprite(3950, 200, 'player');
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
@@ -160,9 +161,13 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
 
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
+
+    // Token Sprite overlap handlers
     game.physics.arcade.overlap(sprite, pukeAbilitySprite, handlePukeSprite);
     game.physics.arcade.overlap(sprite, pukeAbilitySprite2, handlePukeSprite);
+    game.physics.arcade.overlap(sprite, pukeAbilitySprite3, handlePukeSprite);
     game.physics.arcade.overlap(sprite, hoverAbilitySprite, handleHoverSprite);
+    game.physics.arcade.overlap(sprite, hoverAbilitySprite2, handleHoverSprite);
 
     if (!sprite.running && controls.run.isDown) {
         sprite.running = true;
@@ -257,6 +262,8 @@ if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
     }
 
     if(sprite.body.y > 1300){gameOver();}
+    // TODO: Remove for Production:
+    game.debug.bodyInfo(sprite, 16, 24);
 }
 
 function gameOver(){
@@ -385,6 +392,21 @@ function makeTokens() {
     game.physics.arcade.enable(pukeAbilitySprite2);
     //baddy.update = baddyColide;
     pukeAbilitySprite2.body.allowGravity = false;
+
+    pukeAbilitySprite3 = game.add.sprite(3950, 816, 'pukeAbilitySprite');
+    pukeAbilitySprite3.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(pukeAbilitySprite3);
+    //baddy.update = baddyColide;
+    pukeAbilitySprite3.body.allowGravity = false;
+
+    hoverAbilitySprite2 = game.add.sprite(3186, 450, 'hoverAbilitySprite');
+    hoverAbilitySprite2.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(hoverAbilitySprite2);
+    //baddy.update = baddyColide;
+    hoverAbilitySprite2.body.allowGravity = false;
+
+    // TODO: Be sure to add these to the token sprite overlap handler list!
+
 }
 
 function bulletDeath(){
@@ -408,7 +430,7 @@ function populateBaddies(){
         baddies.push(baddy);
     }
     createBaddy(2000, 410);
-    createBaddy(4000, 410);
+    createBaddy(3500, 800);
 }
 
 function baddyColide(){
@@ -449,5 +471,6 @@ var gameState = {
     create: createGameState,
     update: updateGameState
 };
+
 
 module.exports = gameState;
