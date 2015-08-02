@@ -109,6 +109,7 @@ counter.scale.x = 5;
 }
 
 function updateGameState() {
+if(sprite.body.x > 4400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
     var rectangle = new Phaser.Rectangle(0,0,32*(charge/70),32);
@@ -243,6 +244,9 @@ function gameOver(){
     anim.start();
 
     sprite.active = false;
+}
+function win(){
+
 }
 function reset(){
     baddies = [];
