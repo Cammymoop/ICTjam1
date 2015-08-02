@@ -26,6 +26,7 @@ function loadStuff() {
         "use strict";
         game.load.image('titleSprite', 'img/title.png');
         game.load.image('sun', 'img/sun.png');
+        game.load.image('spikeWall', 'img/spikeWall.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/b.png');

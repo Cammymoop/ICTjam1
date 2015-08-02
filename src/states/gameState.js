@@ -34,6 +34,8 @@ var musicMute = false;
 var sun;
 var healthApple;
 var tookDamage;
+var spikeWall;
+var hasSpike = false;
 
 function createGameState() {
 ability = 0;
@@ -146,6 +148,18 @@ counterBackground.scale.y = 0.5;
 }
 
 function updateGameState() {
+if(sprite.body.x > 600 && !hasSpike){//8600
+    hasSpike = true;
+    spikeWall = game.add.sprite(200, 280, 'spikeWall');
+    spikeWall.anchor.setTo(0.5, 0.5);
+    spikeWall.scale.setTo(1, 1);
+    game.physics.arcade.enable(spikeWall);
+
+    spikeWall.body.setSize(120, 640);
+
+    spikeWall.body.allowGravity = false;
+    spikeWall.update = spiker;
+}
 if(sprite.body.x > 4400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
@@ -450,6 +464,11 @@ function makeTokens() {
 
 function bulletDeath(){
     this.kill();
+}
+function spiker(){
+if (sprite.y > this.y){this.body.velocity.y = 80;}
+else {this.body.velocity.y = -80;}
+this.body.velocity.x = 100;
 }
 function populateBaddies(){
 
