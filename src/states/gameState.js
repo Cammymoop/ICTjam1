@@ -26,7 +26,7 @@ var baddies = [];
 var charge = 20;
 var counter;
 var counterBackground;
-var gameOverActivated;
+var gameOverActivated, gameWinActivated;
 var sfx;
 var music;
 var mutePushed;
@@ -50,6 +50,7 @@ ability = 0;
     bgParallax2.fixedToCamera = true;
 
     gameOverActivated = false;
+    gameWinActivated = false;
 
     sfx = {};
     sfx.b1 = game.add.audio('bump1');
@@ -67,8 +68,8 @@ ability = 0;
 
     emitter = game.add.emitter(0, 0, 1);
     // TODO: Set start back to normal for production
-    //sprite = game.add.sprite(200, 200, 'player');
-    sprite = game.add.sprite(14000, 200, 'player');
+    sprite = game.add.sprite(200, 200, 'player');
+    //sprite = game.add.sprite(14000, 200, 'player');
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
@@ -269,7 +270,7 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
 
     if(sprite.body.y > 1300){gameOver();}
     // TODO: Remove for Production:
-    game.debug.bodyInfo(sprite, 16, 24);
+    //game.debug.bodyInfo(sprite, 16, 24);
 }
 
 function gameOver(){
@@ -309,7 +310,17 @@ function gameOver(){
     sprite.kill();
 }
 function win(){
-    var winSprite = game.add.sprite(14400, 816, 'youWin');
+    if (gameWinActivated) {
+        return;
+    }
+    gameWinActivated = true;
+    var winSprite = game.add.sprite(500, 300, 'youWin');
+    winSprite.anchor.setTo(0.5, 0.5);
+    winSprite.fixedToCamera = true;
+    winSprite.scale.setTo(0, 0);
+    var winAnimation = game.add.tween(winSprite.scale);
+    winAnimation.to({x: 1.0, y: 1.0}, Phaser.SECOND, Phaser.Easing.Elastic.Out);
+    winAnimation.start();
 }
 function reset(){
     baddies = [];
