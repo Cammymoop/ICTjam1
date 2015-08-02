@@ -335,6 +335,9 @@ function populateBaddies(){
         baddy.body.allowGravity = false;
         baddy.animations.add('normal', [1, 1, 1, 1, 1, 0]);
         baddy.animations.play('normal', 1, true);
+        baddy.health = 3;
+        baddy.body.drag.x = 1500;
+        baddy.body.drag.y = 1500;
 baddies.push(baddy);
 }
 function baddyColide(){
@@ -344,16 +347,19 @@ function baddyColide(){
 }
 
 function killBaddy(a){
-  charge = charge + 100;
-baddies[a].kill();
+baddies[a].health--;
+if(baddies[a].health <= 0){
+  charge = charge + 100; 
+baddies[a].kill();}
 }
 
 function bulletColide(){
     this.body.velocity.x = 600 * this.facing;
     game.physics.arcade.collide(this, layer);
-    if(game.physics.arcade.collide(this, baddies[0])){killBaddy(0);}
-    if(game.physics.arcade.collide(this, baddies[1])){killBaddy(1);}
+    if(game.physics.arcade.collide(this, baddies[0])){killBaddy(0);this.kill();}
 
+    //if(game.physics.arcade.collide(this, baddies[1])){killBaddy(1);}
+    //this line shouldnt do aything but im scared to remove it.
     if (!this.body.touching.none) {
         this.facing = this.facing * -1;
     }
