@@ -15,6 +15,9 @@ function loadStuff() {
         game.load.spritesheet('enemy', 'img/enemy.png', 830, 678);
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
 
+        game.load.image('gameOver1', 'img/youFailONE.png');
+        game.load.image('gameOver2', 'img/youFailTWO.png');
+
         game.load.image('bg', 'img/background.png');
         game.load.image('bgParallax', 'img/backgroundFront.png');
 
