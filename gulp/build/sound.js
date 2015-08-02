@@ -4,7 +4,7 @@ var gulp = require('gulp');
 
 
 var src = './src/sound/*.+(mp3|ogg)',
-  dist = './dist/img';
+  dist = './dist/sound';
 
 function index() {
   return gulp.src(src)
@@ -12,4 +12,4 @@ function index() {
 }
 
 
-gulp.task('build-img', index);
+gulp.task('build-sound', index);

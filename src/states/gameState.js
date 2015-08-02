@@ -27,6 +27,7 @@ var charge = 20;
 var counter;
 var counterBackground;
 var gameOverActivated;
+var sfx;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -40,6 +41,10 @@ function createGameState() {
     bgParallax2.fixedToCamera = true;
 
     gameOverActivated = false;
+
+    sfx = {};
+    sfx.b1 = game.add.audio('bump1');
+    sfx.b2 = game.add.audio('bump2');
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
@@ -238,17 +243,31 @@ function gameOver(){
     diss.anchor.setTo(0.5, 0.5);
     diss.fixedToCamera = true;
     diss.cameraY = -300;
+    diss.stage = 1;
     var anim = game.add.tween(diss);
     anim.to({cameraY: 300}, Phaser.SECOND, Phaser.Easing.Bounce.Out);
     diss.update = function() {
         this.cameraOffset.y = this.cameraY;
-        if (300 -this.cameraY < 20) {
-            this.loadTexture('gameOver2');
+        if (300 -this.cameraY < 20 && this.stage < 3) {
+            this.stage++;
+            if (this.stage === 2) {
+                this.loadTexture('gameOver2');
+                sfx.b1.play();
+            } else {
+                sfx.b2.play();
+            }
         }
     };
     anim.start();
 
-    sprite.active = false;
+    var poof = game.add.sprite(sprite.x, sprite.y, 'death');
+    poof.anchor.setTo(0.5, 0.5);
+    poof.scale.setTo(0.5, 0.5);
+    poof.animations.add('poof');
+    poof.animations.play('poof', 3, false);
+    poof.alpha = 0.5;
+    game.time.events.add(1200, function() {this.kill();}, poof);
+    sprite.kill();
 }
 function win(){
 

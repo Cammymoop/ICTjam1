@@ -18,6 +18,8 @@ function loadStuff() {
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
         game.load.spritesheet('squid', 'img/squid.png', 533, 242);
 
+        game.load.spritesheet('death', 'img/POOF.png', 500, 500);
+
         game.load.image('gameOver1', 'img/youFailONE.png');
         game.load.image('gameOver2', 'img/youFailTWO.png');
 
@@ -27,10 +29,13 @@ function loadStuff() {
         game.load.image('all_small', 'img/all_small.png');
         game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
 
-        this.loadingBar = this.add.sprite(104, 280, 'loadBar');
-        this.add.sprite(93, 193, 'loadImage');
+        game.load.audio('bump1', ['sound/Bumbp1.mp3', 'sfx/Bumbp1.ogg']);
+        game.load.audio('bump2', ['sound/Bumbp2.mp3', 'sfx/Bumbp2.ogg']);
 
-        game.load.setPreloadSprite(this.loadingBar);
+        var loadingBar = game.add.sprite(104, 280, 'loadBar');
+        game.add.sprite(93, 193, 'loadImage');
+
+        game.load.setPreloadSprite(loadingBar);
 }
 
 function updatePreloader() {
