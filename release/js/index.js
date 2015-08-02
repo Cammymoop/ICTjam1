@@ -122728,12 +122728,37 @@
 	
 	var game = __webpack_require__(1),
 	  Phaser = __webpack_require__(64).Phaser;
+	var controls = {};
+	var titleSprite;
+	var loadingBar;
+	var loadImage;
+	var pressKey;
 	
 	function createPreloader() {
+	game.input.keyboard.addCallbacks(this, function () {if(game.state.current === 'preloader'){game.state.start("gameState");}});
+	        loadingBar.kill();
+	        loadImage.kill();
+	        game.stage.backgroundColor = '#ffffff';
+	        var titleSprite = game.add.sprite(495, 280, 'titleSprite');
+	        titleSprite.scale.setTo(.7, .7);
+	        titleSprite.anchor.setTo( .5, .5);
+	        var pressKey = game.add.sprite(520, 535, 'pressKey');
+	        pressKey.scale.setTo(.5, .5);
+	        pressKey.anchor.setTo( .5, .5);
+	}
+	function startGame(){
+	console.log('WHAHAHAHA');
+	    game.state.start("gameState");
+	
 	}
 	
 	function loadStuff() {
 	        "use strict";
+	        game.load.image('titleSprite', 'img/title.png');
+	        game.load.image('sun', 'img/sun.png');
+	        game.load.image('youWin', 'img/youWIN.png');
+	        game.load.image('pressKey', 'img/pressAnyKey.png');
+	        game.load.image('spikeWall', 'img/spikeWall.png');
 	        game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
 	        game.load.image('pukeAbilitySprite', 'img/a.png');
 	        game.load.image('hoverAbilitySprite', 'img/b.png');
@@ -122745,6 +122770,7 @@
 	        game.load.spritesheet('squid', 'img/squid.png', 533, 242);
 	
 	        game.load.spritesheet('death', 'img/POOF.png', 500, 500);
+	        game.load.spritesheet('apple', 'img/apple.png', 200, 200);
 	
 	        game.load.image('gameOver1', 'img/youFailONE.png');
 	        game.load.image('gameOver2', 'img/youFailTWO.png');
@@ -122753,22 +122779,25 @@
 	        game.load.image('bgParallax', 'img/backgroundFront.png');
 	
 	        game.load.image('all_small', 'img/all_small.png');
-	        game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
+	        game.load.tilemap('testMap', 'map/levelOne.json', null, Phaser.Tilemap.TILED_JSON);
 	
 	        game.load.audio('bump1', ['sound/Bumbp1.mp3', 'sfx/Bumbp1.ogg']);
 	        game.load.audio('bump2', ['sound/Bumbp2.mp3', 'sfx/Bumbp2.ogg']);
 	        game.load.audio('wobble', ['sound/wobble.mp3', 'sfx/wobble.ogg']);
+	        game.load.audio('endSound', ['sound/end.mp3', 'sfx/end.ogg']);
 	
 	        game.load.audio('bgMusic', ['sound/Music1.mp3', 'sfx/Music1.ogg']);
 	
-	        var loadingBar = game.add.sprite(104, 280, 'loadBar');
-	        game.add.sprite(93, 193, 'loadImage');
+	        loadingBar = game.add.sprite(104, 280, 'loadBar');
+	        loadImage = game.add.sprite(93, 193, 'loadImage');
 	
 	        game.load.setPreloadSprite(loadingBar);
+	
+	
+	        controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	}
 	
 	function updatePreloader() {
-	    game.state.start("gameState");
 	}
 	
 	var preloader = {
@@ -122791,9 +122820,8 @@
 	
 	var sprite;
 	var iAmHovering = false;
-	var pukeAbilitySprite;
-	var pukeAbilitySprite2;
-	var hoverAbilitySprite;
+	var pukeAbilitySprite, pukeAbilitySprite2, pukeAbilitySprite3;
+	var hoverAbilitySprite, hoverAbilitySprite2, hoverAbilitySprite3;
 	var pukeAbility = 0;
 	var hoverAbility = 0;
 	var controls = {};
@@ -122813,11 +122841,16 @@
 	var charge = 20;
 	var counter;
 	var counterBackground;
-	var gameOverActivated;
+	var gameOverActivated, gameWinActivated;
 	var sfx;
 	var music;
 	var mutePushed;
-	var musicMute;
+	var musicMute = false;
+	var sun;
+	var healthApple;
+	var tookDamage;
+	var spikeWall;
+	var hasSpike = false;
 	
 	function createGameState() {
 	ability = 0;
@@ -122826,22 +122859,27 @@
 	
 	    var bg = game.add.sprite(0, -300, 'bg');
 	    bg.fixedToCamera = true;
+	    sun = game.add.sprite(200, 280, 'sun');
+	    sun.anchor.setTo(0.5, 0.5);
+	    sun.fixedToCamera = true;
+	    sun.scale.setTo(0.1, 0.1);
 	    bgParallax = game.add.sprite(0, 0, 'bgParallax');
 	    bgParallax.fixedToCamera = true;
 	    bgParallax2 = game.add.sprite(1000, 0, 'bgParallax');
 	    bgParallax2.fixedToCamera = true;
 	
 	    gameOverActivated = false;
+	    gameWinActivated = false;
 	
 	    sfx = {};
 	    sfx.b1 = game.add.audio('bump1');
 	    sfx.b2 = game.add.audio('bump2');
 	    sfx.wobble = game.add.audio('wobble');
+	    sfx.endSound = game.add.audio('endSound');
 	
 	    music = game.add.sound('bgMusic');
 	    music.play('', 0, musicMute ? 0 : 0.8, true);
 	    mutePushed = false;
-	    musicMute = false;
 	
 	    testMap = game.add.tilemap('testMap');
 	    testMap.addTilesetImage('all_small', 'all_small');
@@ -122849,7 +122887,9 @@
 	    grassyLayer = testMap.createLayer('Grass On Top');
 	
 	    emitter = game.add.emitter(0, 0, 1);
+	    // TODO: Set start back to normal for production
 	    sprite = game.add.sprite(200, 200, 'player');
+	    //sprite = game.add.sprite(14000, 200, 'player');
 	    sprite.anchor.setTo(0.65, 0.5);
 	    sprite.facing = 1;
 	
@@ -122863,6 +122903,7 @@
 	
 	    sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
 	    sprite.animations.add('stand', [6]);
+	    sprite.animations.add('float', [39]);
 	
 	    sprite.animations.play('walk', 60, true);
 	
@@ -122874,8 +122915,7 @@
 	    game.physics.arcade.collide(sprite, layer);
 	    testMap.setCollisionBetween(8, 11, true, layer);
 	    testMap.setCollisionBetween(13, 17, true, layer);
-	    testMap.setCollisionBetween(19, 23, true, layer);
-	    testMap.setCollisionBetween(26, 29, true, layer);
+	    testMap.setCollisionBetween(19, 30, true, layer);
 	
 	    sprite.body.maxVelocity.x = 400;
 	    sprite.body.drag.x = 370;
@@ -122914,21 +122954,45 @@
 	    populateBaddies();
 	    makeTokens();
 	    iAmHovering = false;
+	
+	    sprite.health = 3;
+	    healthApple = game.add.sprite(960, 10, 'apple');
+	    healthApple.anchor.setTo(1, 0);
+	    healthApple.scale.setTo(0.4, 0.4);
+	    healthApple.fixedToCamera = true;
+	
+	    tookDamage = false;
+	}
+	function spikeCall(a, b){
+	    playerDamage();
 	}
 	
 	function updateGameState() {
-	if(sprite.body.x > 4400){win();}
+	if(sprite.body.x > 8600 && !hasSpike){//8600
+	    hasSpike = true;
+	    spikeWall = game.add.sprite(8200, 280, 'spikeWall');
+	    spikeWall.anchor.setTo(0.5, 0.5);
+	    spikeWall.scale.setTo(1, 1);
+	    game.physics.arcade.enable(spikeWall);
+	
+	    spikeWall.body.setSize(120, 640);
+	
+	    spikeWall.body.allowGravity = false;
+	    spikeWall.update = spiker;
+	}
+	    if(hasSpike){game.physics.arcade.collide(sprite, spikeWall, spikeCall);}
+	if(sprite.body.x > 14400){win();}
 	if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
 	    game.camera.focusOnXY(sprite.x, sprite.y - 120);
 	    var rectangle = new Phaser.Rectangle(0,0,135*(charge/70),45);
 	
 	    counter.crop(rectangle);
 	    if(Math.random() > 0.5) {
-	        charge += 0.2;
+	        modifyCharge(0.2);
 	    } else {
-	        charge -= 0.2;
+	        modifyCharge(-0.2);
 	    }
-	    if(charge > 70) {abilityTrigger(); charge = charge - 70;}
+	    if(charge > 70) {abilityTrigger(); modifyCharge(0, true);}
 	    if(charge < 0) {charge = 0;}
 	
 	    if (!mutePushed && controls.mute.isDown) {
@@ -122947,9 +123011,14 @@
 	
 	    game.physics.arcade.collide(sprite, layer);
 	    game.physics.arcade.collide(emitter, layer);
+	
+	    // Token Sprite overlap handlers
 	    game.physics.arcade.overlap(sprite, pukeAbilitySprite, handlePukeSprite);
 	    game.physics.arcade.overlap(sprite, pukeAbilitySprite2, handlePukeSprite);
+	    game.physics.arcade.overlap(sprite, pukeAbilitySprite3, handlePukeSprite);
 	    game.physics.arcade.overlap(sprite, hoverAbilitySprite, handleHoverSprite);
+	    game.physics.arcade.overlap(sprite, hoverAbilitySprite2, handleHoverSprite);
+	    game.physics.arcade.overlap(sprite, hoverAbilitySprite3, handleHoverSprite);
 	
 	    if (!sprite.running && controls.run.isDown) {
 	        sprite.running = true;
@@ -122962,10 +123031,10 @@
 	        sprite.body.drag.x = 370;
 	    }
 	    if (sprite.running) {
-	        charge += Math.random() * 0.5;
+	        modifyCharge(Math.random() * 0.5);
 	    }
 	
-	    charge = charge + (Math.abs(sprite.body.velocity.x)/500);
+	    modifyCharge(Math.abs(sprite.body.velocity.x)/500);
 	    var moving = false;
 	    if (controls.left.isDown) {
 	        moving = true;
@@ -122992,13 +123061,13 @@
 	        }
 	    }
 	    if (!moving && !Math.abs(sprite.body.velocity.y)) {
-	        charge -= 0.1;
-	        if (sprite.animations.currentAnim.name !== 'stand') {
+	        modifyCharge(-0.1);
+	        if (!iAmHovering && sprite.animations.currentAnim.name !== 'stand') {
 	            sprite.animations.play('stand');
 	        }
 	    } else {
-	if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
-	        if (sprite.animations.currentAnim.name !== 'walk') {
+	    if(Math.abs(sprite.body.velocity.y) > 100){modifyCharge(0.4);}
+	        if (!iAmHovering && sprite.animations.currentAnim.name !== 'walk') {
 	            sprite.animations.play('walk', 60, true);
 	        }
 	    }
@@ -123012,7 +123081,7 @@
 	       puker++;
 	    }
 	    else if (controls.jump.isDown && sprite.body.velocity.y < -300){
-	        charge += 0.5;
+	        modifyCharge(0.5);
 	        sprite.body.velocity.y -= 20;
 	    }
 	    //if(puker % 4 == 0){
@@ -123044,6 +123113,23 @@
 	    }
 	
 	    if(sprite.body.y > 1300){gameOver();}
+	    // TODO: Remove for Production:
+	    //game.debug.bodyInfo(sprite, 16, 24);
+	}
+	
+	function playerDamage() {
+	    if (!tookDamage) {
+	        tookDamage = true;
+	        game.time.events.add(700, function() {tookDamage = false;});
+	        sfx.b1.play();
+	        if (sprite.health === 1) {
+	            healthApple.kill();
+	            gameOver();
+	            return;
+	        }
+	        sprite.health--;
+	        healthApple.frame = -(sprite.health) + 3;
+	    }
 	}
 	
 	function gameOver(){
@@ -123083,7 +123169,18 @@
 	    sprite.kill();
 	}
 	function win(){
-	
+	    if (gameWinActivated) {
+	        return;
+	    }
+	    gameWinActivated = true;
+	    sfx.endSound.play();
+	    var winSprite = game.add.sprite(500, 300, 'youWin');
+	    winSprite.anchor.setTo(0.5, 0.5);
+	    winSprite.fixedToCamera = true;
+	    winSprite.scale.setTo(0, 0);
+	    var winAnimation = game.add.tween(winSprite.scale);
+	    winAnimation.to({x: 1.0, y: 1.0}, Phaser.SECOND, Phaser.Easing.Elastic.Out);
+	    winAnimation.start();
 	}
 	function reset(){
 	    baddies = [];
@@ -123137,10 +123234,12 @@
 	        bullet.animations.add('squidGrow', [1, 2]);
 	        game.time.events.add(300, function() {this.animations.play('squidGrow', 15, true)}, bullet);
 	        game.time.events.add(5000, bulletDeath, bullet);
-	    }
+	}
+	
 	function hover() {
 	    if (iAmHovering) {
 	    } else {
+	        sprite.animations.play('float', 10, false);
 	        iAmHovering = true;
 	        sprite.body.gravity.y = 0;
 	        sprite.body.velocity.y = 0;
@@ -123155,31 +123254,58 @@
 	}
 	
 	function makeTokens() {
-	    pukeAbilitySprite = game.add.sprite(1000, 400, 'pukeAbilitySprite');
+	    pukeAbilitySprite = game.add.sprite(1000, 410, 'pukeAbilitySprite');
 	    pukeAbilitySprite.scale.setTo(0.5, 0.5);
 	    game.physics.arcade.enable(pukeAbilitySprite);
 	    //baddy.update = baddyColide;
 	    pukeAbilitySprite.body.allowGravity = false;
 	
-	    hoverAbilitySprite = game.add.sprite(2000, 400, 'hoverAbilitySprite');
+	    hoverAbilitySprite = game.add.sprite(2000, 410, 'hoverAbilitySprite');
 	    hoverAbilitySprite.scale.setTo(0.5, 0.5);
 	    game.physics.arcade.enable(hoverAbilitySprite);
 	    //baddy.update = baddyColide;
 	    hoverAbilitySprite.body.allowGravity = false;
 	
-	    pukeAbilitySprite2 = game.add.sprite(3000, 1000, 'pukeAbilitySprite');
+	    pukeAbilitySprite2 = game.add.sprite(4050, 300, 'pukeAbilitySprite');
 	    pukeAbilitySprite2.scale.setTo(0.5, 0.5);
 	    game.physics.arcade.enable(pukeAbilitySprite2);
 	    //baddy.update = baddyColide;
 	    pukeAbilitySprite2.body.allowGravity = false;
+	
+	    pukeAbilitySprite3 = game.add.sprite(3950, 816, 'pukeAbilitySprite');
+	    pukeAbilitySprite3.scale.setTo(0.5, 0.5);
+	    game.physics.arcade.enable(pukeAbilitySprite3);
+	    //baddy.update = baddyColide;
+	    pukeAbilitySprite3.body.allowGravity = false;
+	
+	    hoverAbilitySprite2 = game.add.sprite(3186, 450, 'hoverAbilitySprite');
+	    hoverAbilitySprite2.scale.setTo(0.5, 0.5);
+	    game.physics.arcade.enable(hoverAbilitySprite2);
+	    //baddy.update = baddyColide;
+	    hoverAbilitySprite2.body.allowGravity = false;
+	
+	    hoverAbilitySprite3 = game.add.sprite(5550, 816, 'hoverAbilitySprite');
+	    hoverAbilitySprite3.scale.setTo(0.5, 0.5);
+	    game.physics.arcade.enable(hoverAbilitySprite3);
+	    //baddy.update = baddyColide;
+	    hoverAbilitySprite3.body.allowGravity = false;
+	
+	    // TODO: Be sure to add these to the token sprite overlap handler list!
+	
 	}
 	
 	function bulletDeath(){
 	    this.kill();
 	}
+	function spiker(){
+	if (sprite.y > this.y){this.body.velocity.y = 80;}
+	else {this.body.velocity.y = -80;}
+	this.body.velocity.x = 100;
+	}
 	function populateBaddies(){
 	
-	    var baddy = game.add.sprite(2000, 410, 'enemy');
+	    function createBaddy(x, y) {
+	        var baddy = game.add.sprite(x, y, 'enemy');
 	        baddy.scale.setTo(0.5, 0.5);
 	        baddy.anchor.setTo(0.5, 0.5);
 	        game.physics.arcade.enable(baddy);
@@ -123191,11 +123317,26 @@
 	        baddy.health = 3;
 	        baddy.body.drag.x = 1500;
 	        baddy.body.drag.y = 1500;
-	baddies.push(baddy);
+	        baddies.push(baddy);
+	    }
+	    createBaddy(2000, 410);
+	    createBaddy(3500, 800);
+	    createBaddy(5550, 800);
 	}
+	
+	function modifyCharge(value, abs) {
+	    if (sprite.alive) {
+	        if (abs !== true) {
+	            charge += value;
+	        } else {
+	            charge = value;
+	        }
+	    }
+	}
+	
 	function baddyColide(){
 	if(sprite.body.x > 800) {this.body.velocity.x = -400;}
-	    if(game.physics.arcade.collide(this, sprite)){gameOver();}
+	    if(game.physics.arcade.collide(this, sprite)){playerDamage();}
 	    game.physics.arcade.collide(this, layer);
 	}
 	
@@ -123204,7 +123345,7 @@
 	game.time.events.add(500, function(){baddyAnim(a);});
 	baddies[a].health--;
 	if(baddies[a].health <= 0){
-	  charge = charge + 100;
+	  modifyCharge(100);
 	baddies[a].kill();}
 	}
 	function baddyAnim(a){
@@ -123214,8 +123355,12 @@
 	function bulletColide(){
 	    this.body.velocity.x = 600 * this.facing;
 	    game.physics.arcade.collide(this, layer);
-	    if(game.physics.arcade.collide(this, baddies[0])){killBaddy(0);this.kill();}
-	
+	    var i;
+	    for (i=0; i < baddies.length; i++) {
+	        if(game.physics.arcade.collide(this, baddies[i])) {
+	            killBaddy(i);this.kill();
+	        }
+	    }
 	    //if(game.physics.arcade.collide(this, baddies[1])){killBaddy(1);}
 	    //this line shouldnt do aything but im scared to remove it.
 	    if (!this.body.touching.none) {
@@ -123227,6 +123372,7 @@
 	    create: createGameState,
 	    update: updateGameState
 	};
+	
 	
 	module.exports = gameState;
 
