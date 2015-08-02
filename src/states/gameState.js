@@ -31,7 +31,7 @@ var gameOverActivated;
 var sfx;
 var music;
 var mutePushed;
-var musicMute;
+var musicMute = false;
 
 function createGameState() {
 ability = 0;
@@ -55,7 +55,6 @@ ability = 0;
     music = game.add.sound('bgMusic');
     music.play('', 0, musicMute ? 0 : 0.8, true);
     mutePushed = false;
-    musicMute = false;
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
