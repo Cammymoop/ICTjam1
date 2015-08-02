@@ -220,9 +220,16 @@ if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
 }
 
 function gameOver(){
-//TODO you fail
-    game.time.events.add(1000, reset);
-    sprite.kill();
+    game.time.events.add(3000, reset);
+    var diss = game.add.sprite(500, 300, 'gameOver1');
+    diss.anchor.setTo(0.5, 0.5);
+    diss.fixedToCamera = true;
+    //var anim = game.add.tween(diss);
+    //anim.to({cameraY: 300}, Phaser.SECOND, Phaser.Easing.Bounce.Out);
+    //diss.update = function() {this.cameraOffset.y = this.cameraY;};
+    //anim.onComplete.add(function() {this.loadTexture('gameOver2');}, diss);
+
+    sprite.active = false;
 }
 function reset(){
     baddies = [];
