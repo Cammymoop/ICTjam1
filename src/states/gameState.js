@@ -146,11 +146,14 @@ counterBackground.scale.y = 0.5;
 
     tookDamage = false;
 }
+function spikeCall(a, b){
+    playerDamage();
+}
 
 function updateGameState() {
-if(sprite.body.x > 600 && !hasSpike){//8600
+if(sprite.body.x > 8600 && !hasSpike){//8600
     hasSpike = true;
-    spikeWall = game.add.sprite(200, 280, 'spikeWall');
+    spikeWall = game.add.sprite(8200, 280, 'spikeWall');
     spikeWall.anchor.setTo(0.5, 0.5);
     spikeWall.scale.setTo(1, 1);
     game.physics.arcade.enable(spikeWall);
@@ -160,6 +163,7 @@ if(sprite.body.x > 600 && !hasSpike){//8600
     spikeWall.body.allowGravity = false;
     spikeWall.update = spiker;
 }
+    if(hasSpike){game.physics.arcade.collide(sprite, spikeWall, spikeCall);}
 if(sprite.body.x > 4400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
