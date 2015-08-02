@@ -281,12 +281,16 @@ function abilityTrigger(){
 function puke(){
     puker = 1;
         var bullet = game.add.sprite(sprite.x, sprite.y, 'squid');
-        bullet.scale.setTo(0.25, 0.25);
+        if (sprite.facing < 1) {
+            bullet.scale.setTo(-0.25, 0.25)
+        } else {
+            bullet.scale.setTo(0.25, 0.25);
+        }
         bullet.anchor.setTo(0.5, 0.5);
-        game.physics.arcade.enable(bullet);
-        bullet.body.setSize(0,0,400,100);
         bullet.update = bulletColide;
         bullet.facing = sprite.facing;
+        game.physics.arcade.enable(bullet);
+        bullet.body.setSize(400,100,0,0);
         bullet.body.allowGravity = false;
         bullet.animations.add('squidGrow', [1, 2]);
         game.time.events.add(300, function() {this.animations.play('squidGrow', 15, true)}, bullet);
@@ -349,7 +353,7 @@ function baddyColide(){
 function killBaddy(a){
 baddies[a].health--;
 if(baddies[a].health <= 0){
-  charge = charge + 100; 
+  charge = charge + 100;
 baddies[a].kill();}
 }
 
