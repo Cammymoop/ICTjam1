@@ -33,7 +33,7 @@ function loadStuff() {
         game.load.image('bgParallax', 'img/backgroundFront.png');
 
         game.load.image('all_small', 'img/all_small.png');
-        game.load.tilemap('testMap', 'map/mapTestOne.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('testMap', 'map/levelOne.json', null, Phaser.Tilemap.TILED_JSON);
 
         game.load.audio('bump1', ['sound/Bumbp1.mp3', 'sfx/Bumbp1.ogg']);
         game.load.audio('bump2', ['sound/Bumbp2.mp3', 'sfx/Bumbp2.ogg']);
