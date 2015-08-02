@@ -31,6 +31,7 @@ var sfx;
 var music;
 var mutePushed;
 var musicMute = false;
+var sun;
 
 function createGameState() {
 ability = 0;
@@ -39,6 +40,10 @@ ability = 0;
 
     var bg = game.add.sprite(0, -300, 'bg');
     bg.fixedToCamera = true;
+    sun = game.add.sprite(200, 280, 'sun');
+    sun.anchor.setTo(0.5, 0.5);
+    sun.fixedToCamera = true;
+    sun.scale.setTo(0.1, 0.1);
     bgParallax = game.add.sprite(0, 0, 'bgParallax');
     bgParallax.fixedToCamera = true;
     bgParallax2 = game.add.sprite(1000, 0, 'bgParallax');

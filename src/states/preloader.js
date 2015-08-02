@@ -4,16 +4,28 @@ var game = require('../game'),
   Phaser = require('phaser').Phaser;
 var controls = {};
 var titleSprite;
+var loadingBar;
+var loadImage;
 
 function createPreloader() {
-        var titleSprite = game.add.sprite(535, 320, 'titleSprite');
-        titleSprite.scale.setTo(.9, .9);
+game.input.keyboard.addCallbacks(this, function () {if(game.state.current === 'preloader'){game.state.start("gameState");}});
+        loadingBar.kill(); 
+        loadImage.kill();
+        game.stage.backgroundColor = '#ffffff';
+        var titleSprite = game.add.sprite(495, 300, 'titleSprite');
+        titleSprite.scale.setTo(.8, .8);
         titleSprite.anchor.setTo( .5, .5);
+}
+function startGame(){
+console.log('WHAHAHAHA');
+    game.state.start("gameState");
+
 }
 
 function loadStuff() {
         "use strict";
         game.load.image('titleSprite', 'img/title.png');
+        game.load.image('sun', 'img/sun.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/b.png');
@@ -41,8 +53,8 @@ function loadStuff() {
 
         game.load.audio('bgMusic', ['sound/Music1.mp3', 'sfx/Music1.ogg']);
 
-        var loadingBar = game.add.sprite(104, 280, 'loadBar');
-        game.add.sprite(93, 193, 'loadImage');
+        loadingBar = game.add.sprite(104, 280, 'loadBar');
+        loadImage = game.add.sprite(93, 193, 'loadImage');
 
         game.load.setPreloadSprite(loadingBar);
 
@@ -51,9 +63,6 @@ function loadStuff() {
 }
 
 function updatePreloader() {
-if(controls.jump.isDown){
-    game.state.start("gameState");
-}
 }
 
 var preloader = {
