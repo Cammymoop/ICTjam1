@@ -77,6 +77,7 @@ counterBackground.scale.y = 0.5;
 
     sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
     sprite.animations.add('stand', [6]);
+    sprite.animations.add('float', [39]);
 
     sprite.animations.play('walk', 60, true);
 
@@ -138,11 +139,11 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
 
     counter.crop(rectangle);
     if(Math.random() > 0.5) {
-        charge += 0.2;
+        modifyCharge(0.2);
     } else {
-        charge -= 0.2;
+        modifyCharge(-0.2);
     }
-    if(charge > 70) {abilityTrigger(); charge = charge - 70;}
+    if(charge > 70) {abilityTrigger(); modifyCharge(0, true);}
     if(charge < 0) {charge = 0;}
 
     if (!mutePushed && controls.mute.isDown) {
@@ -180,10 +181,10 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
         sprite.body.drag.x = 370;
     }
     if (sprite.running) {
-        charge += Math.random() * 0.5;
+        modifyCharge(Math.random() * 0.5);
     }
 
-    charge = charge + (Math.abs(sprite.body.velocity.x)/500);
+    modifyCharge(Math.abs(sprite.body.velocity.x)/500);
     var moving = false;
     if (controls.left.isDown) {
         moving = true;
@@ -210,13 +211,13 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
         }
     }
     if (!moving && !Math.abs(sprite.body.velocity.y)) {
-        charge -= 0.1;
-        if (sprite.animations.currentAnim.name !== 'stand') {
+        modifyCharge(-0.1);
+        if (!iAmHovering && sprite.animations.currentAnim.name !== 'stand') {
             sprite.animations.play('stand');
         }
     } else {
-if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
-        if (sprite.animations.currentAnim.name !== 'walk') {
+    if(Math.abs(sprite.body.velocity.y) > 100){modifyCharge(0.4);}
+        if (!iAmHovering && sprite.animations.currentAnim.name !== 'walk') {
             sprite.animations.play('walk', 60, true);
         }
     }
@@ -230,7 +231,7 @@ if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
        puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
-        charge += 0.5;
+        modifyCharge(0.5);
         sprite.body.velocity.y -= 20;
     }
     //if(puker % 4 == 0){
@@ -357,10 +358,12 @@ function puke(){
         bullet.animations.add('squidGrow', [1, 2]);
         game.time.events.add(300, function() {this.animations.play('squidGrow', 15, true)}, bullet);
         game.time.events.add(5000, bulletDeath, bullet);
-    }
+}
+
 function hover() {
     if (iAmHovering) {
     } else {
+        sprite.animations.play('float', 10, false);
         iAmHovering = true;
         sprite.body.gravity.y = 0;
         sprite.body.velocity.y = 0;
@@ -433,6 +436,16 @@ function populateBaddies(){
     createBaddy(3500, 800);
 }
 
+function modifyCharge(value, abs) {
+    if (sprite.alive) {
+        if (abs !== true) {
+            charge += value;
+        } else {
+            charge = value;
+        }
+    }
+}
+
 function baddyColide(){
 if(sprite.body.x > 800) {this.body.velocity.x = -400;}
     if(game.physics.arcade.collide(this, sprite)){gameOver();}
@@ -444,7 +457,7 @@ baddies[a].animations.play('hurt', 1, true);
 game.time.events.add(500, function(){baddyAnim(a);});
 baddies[a].health--;
 if(baddies[a].health <= 0){
-  charge = charge + 100;
+  modifyCharge(100);
 baddies[a].kill();}
 }
 function baddyAnim(a){
