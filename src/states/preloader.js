@@ -6,15 +6,19 @@ var controls = {};
 var titleSprite;
 var loadingBar;
 var loadImage;
+var pressKey;
 
 function createPreloader() {
 game.input.keyboard.addCallbacks(this, function () {if(game.state.current === 'preloader'){game.state.start("gameState");}});
         loadingBar.kill();
         loadImage.kill();
         game.stage.backgroundColor = '#ffffff';
-        var titleSprite = game.add.sprite(495, 300, 'titleSprite');
-        titleSprite.scale.setTo(.8, .8);
+        var titleSprite = game.add.sprite(495, 280, 'titleSprite');
+        titleSprite.scale.setTo(.7, .7);
         titleSprite.anchor.setTo( .5, .5);
+        var pressKey = game.add.sprite(520, 535, 'pressKey');
+        pressKey.scale.setTo(.5, .5);
+        pressKey.anchor.setTo( .5, .5);
 }
 function startGame(){
 console.log('WHAHAHAHA');
@@ -27,6 +31,7 @@ function loadStuff() {
         game.load.image('titleSprite', 'img/title.png');
         game.load.image('sun', 'img/sun.png');
         game.load.image('youWin', 'img/youWIN.png');
+        game.load.image('pressKey', 'img/pressAnyKey.png');
         game.load.image('spikeWall', 'img/spikeWall.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
