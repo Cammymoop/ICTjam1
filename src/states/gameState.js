@@ -30,6 +30,7 @@ var gameOverActivated;
 var sfx;
 
 function createGameState() {
+ability = 0;
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.stage.backgroundColor = '#999999';
 
