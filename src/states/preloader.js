@@ -13,6 +13,7 @@ function loadStuff() {
         game.load.image('hoverAbilitySprite', 'img/a.png');
         game.load.image('test2', 'img/testPNG.png');
         game.load.image('abilityBar', 'img/abilityBar.png');
+        game.load.image('abilityBarBackground', 'img/bar.png');
         game.load.spritesheet('enemy', 'img/enemy.png', 830, 678);
         game.load.spritesheet('vomit', 'img/Emitter.png', 32, 32);
         game.load.spritesheet('squid', 'img/squid.png', 533, 242);
