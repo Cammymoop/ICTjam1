@@ -50,9 +50,9 @@ function createGameState() {
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
-    counter = game.add.sprite(0, 0, 'test2');
+    counter = game.add.sprite(0, 0, 'abilityBar');
 counter.fixedToCamera = true;
-counter.scale.x = 5;
+counter.scale.x = 2;
 
     sprite.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]);
     sprite.animations.add('stand', [6]);
@@ -112,7 +112,7 @@ function updateGameState() {
 if(sprite.body.x > 4400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
-    var rectangle = new Phaser.Rectangle(0,0,32*(charge/70),32);
+    var rectangle = new Phaser.Rectangle(0,0,135*(charge/70),45);
 
     counter.crop(rectangle);
     if(Math.random() > 0.5) {
@@ -280,11 +280,16 @@ function abilityTrigger(){
 
 function puke(){
     puker = 1;
-        var bullet = game.add.sprite(sprite.x, sprite.y + 30, 'test2');
+        var bullet = game.add.sprite(sprite.x, sprite.y, 'squid');
+        bullet.scale.setTo(0.25, 0.25);
+        bullet.anchor.setTo(0.5, 0.5);
         game.physics.arcade.enable(bullet);
+        bullet.body.setSize(0,0,400,100);
         bullet.update = bulletColide;
         bullet.facing = sprite.facing;
         bullet.body.allowGravity = false;
+        bullet.animations.add('squidGrow', [1, 2]);
+        game.time.events.add(300, function() {this.animations.play('squidGrow', 15, true)}, bullet);
         game.time.events.add(5000, bulletDeath, bullet);
     }
 function hover() {
@@ -339,7 +344,7 @@ function baddyColide(){
 }
 
 function killBaddy(a){
-  charge = charge + 100; 
+  charge = charge + 100;
 baddies[a].kill();
 }
 
