@@ -3,7 +3,7 @@
 var gulp = require('gulp');
 
 
-var src = './src/sound/*.+(mp3|ogg)',
+var src = './src/img/*.png',
   dist = './dist/img';
 
 function index() {
