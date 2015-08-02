@@ -32,6 +32,10 @@ var music;
 var mutePushed;
 var musicMute = false;
 var sun;
+var healthApple;
+var tookDamage;
+var spikeWall;
+var hasSpike = false;
 
 function createGameState() {
 ability = 0;
@@ -134,10 +138,34 @@ counterBackground.scale.y = 0.5;
     populateBaddies();
     makeTokens();
     iAmHovering = false;
+
+    sprite.health = 3;
+    healthApple = game.add.sprite(960, 10, 'apple');
+    healthApple.anchor.setTo(1, 0);
+    healthApple.scale.setTo(0.4, 0.4);
+    healthApple.fixedToCamera = true;
+
+    tookDamage = false;
+}
+function spikeCall(a, b){
+    playerDamage();
 }
 
 function updateGameState() {
-if(sprite.body.x > 14400){win();}
+if(sprite.body.x > 8600 && !hasSpike){//8600
+    hasSpike = true;
+    spikeWall = game.add.sprite(8200, 280, 'spikeWall');
+    spikeWall.anchor.setTo(0.5, 0.5);
+    spikeWall.scale.setTo(1, 1);
+    game.physics.arcade.enable(spikeWall);
+
+    spikeWall.body.setSize(120, 640);
+
+    spikeWall.body.allowGravity = false;
+    spikeWall.update = spiker;
+}
+    if(hasSpike){game.physics.arcade.collide(sprite, spikeWall, spikeCall);}
+if(sprite.body.x > 4400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
     var rectangle = new Phaser.Rectangle(0,0,135*(charge/70),45);
@@ -271,6 +299,21 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     if(sprite.body.y > 1300){gameOver();}
     // TODO: Remove for Production:
     //game.debug.bodyInfo(sprite, 16, 24);
+}
+
+function playerDamage() {
+    if (!tookDamage) {
+        tookDamage = true;
+        game.time.events.add(700, function() {tookDamage = false;});
+        sfx.b1.play();
+        if (sprite.health === 1) {
+            healthApple.kill();
+            gameOver();
+            return;
+        }
+        sprite.health--;
+        healthApple.frame = -(sprite.health) + 3;
+    }
 }
 
 function gameOver(){
@@ -437,6 +480,11 @@ function makeTokens() {
 function bulletDeath(){
     this.kill();
 }
+function spiker(){
+if (sprite.y > this.y){this.body.velocity.y = 80;}
+else {this.body.velocity.y = -80;}
+this.body.velocity.x = 100;
+}
 function populateBaddies(){
 
     function createBaddy(x, y) {
@@ -471,7 +519,7 @@ function modifyCharge(value, abs) {
 
 function baddyColide(){
 if(sprite.body.x > 800) {this.body.velocity.x = -400;}
-    if(game.physics.arcade.collide(this, sprite)){gameOver();}
+    if(game.physics.arcade.collide(this, sprite)){playerDamage();}
     game.physics.arcade.collide(this, layer);
 }
 

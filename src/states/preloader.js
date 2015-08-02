@@ -27,6 +27,7 @@ function loadStuff() {
         game.load.image('titleSprite', 'img/title.png');
         game.load.image('sun', 'img/sun.png');
         game.load.image('youWin', 'img/youWIN.png');
+        game.load.image('spikeWall', 'img/spikeWall.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/b.png');
@@ -38,6 +39,7 @@ function loadStuff() {
         game.load.spritesheet('squid', 'img/squid.png', 533, 242);
 
         game.load.spritesheet('death', 'img/POOF.png', 500, 500);
+        game.load.spritesheet('apple', 'img/apple.png', 200, 200);
 
         game.load.image('gameOver1', 'img/youFailONE.png');
         game.load.image('gameOver2', 'img/youFailTWO.png');
