@@ -25,6 +25,7 @@ var bgParallax2;
 var baddies = [];
 var charge = 20;
 var counter;
+var gameOverActivated;
 
 function createGameState() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -36,6 +37,8 @@ function createGameState() {
     bgParallax.fixedToCamera = true;
     bgParallax2 = game.add.sprite(1000, 0, 'bgParallax');
     bgParallax2.fixedToCamera = true;
+
+    gameOverActivated = false;
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
@@ -220,14 +223,24 @@ if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
 }
 
 function gameOver(){
+    if (gameOverActivated) {
+        return;
+    }
+    gameOverActivated = true;
     game.time.events.add(3000, reset);
-    var diss = game.add.sprite(500, 300, 'gameOver1');
+    var diss = game.add.sprite(500, -300, 'gameOver1');
     diss.anchor.setTo(0.5, 0.5);
     diss.fixedToCamera = true;
-    //var anim = game.add.tween(diss);
-    //anim.to({cameraY: 300}, Phaser.SECOND, Phaser.Easing.Bounce.Out);
-    //diss.update = function() {this.cameraOffset.y = this.cameraY;};
-    //anim.onComplete.add(function() {this.loadTexture('gameOver2');}, diss);
+    diss.cameraY = -300;
+    var anim = game.add.tween(diss);
+    anim.to({cameraY: 300}, Phaser.SECOND, Phaser.Easing.Bounce.Out);
+    diss.update = function() {
+        this.cameraOffset.y = this.cameraY;
+        if (300 -this.cameraY < 20) {
+            this.loadTexture('gameOver2');
+        }
+    };
+    anim.start();
 
     sprite.active = false;
 }
