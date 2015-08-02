@@ -45,6 +45,7 @@ function createGameState() {
     sfx = {};
     sfx.b1 = game.add.audio('bump1');
     sfx.b2 = game.add.audio('bump2');
+    sfx.wobble = game.add.audio('wobble');
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
@@ -298,6 +299,7 @@ function abilityTrigger(){
     } else if (ability == 1) {
         hover();
     }
+    sfx.wobble.play();
     emitting = true;
     game.time.events.add(1000, function() {emitting = false;});
 }
