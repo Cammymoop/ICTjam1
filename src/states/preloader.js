@@ -58,6 +58,7 @@ function loadStuff() {
         game.load.audio('bump1', ['sound/Bumbp1.mp3', 'sfx/Bumbp1.ogg']);
         game.load.audio('bump2', ['sound/Bumbp2.mp3', 'sfx/Bumbp2.ogg']);
         game.load.audio('wobble', ['sound/wobble.mp3', 'sfx/wobble.ogg']);
+        game.load.audio('endSound', ['sound/end.mp3', 'sfx/end.ogg']);
 
         game.load.audio('bgMusic', ['sound/Music1.mp3', 'sfx/Music1.ogg']);
 

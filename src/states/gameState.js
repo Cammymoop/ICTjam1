@@ -60,6 +60,7 @@ ability = 0;
     sfx.b1 = game.add.audio('bump1');
     sfx.b2 = game.add.audio('bump2');
     sfx.wobble = game.add.audio('wobble');
+    sfx.endSound = game.add.audio('endSound');
 
     music = game.add.sound('bgMusic');
     music.play('', 0, musicMute ? 0 : 0.8, true);
@@ -357,6 +358,7 @@ function win(){
         return;
     }
     gameWinActivated = true;
+    sfx.endSound.play();
     var winSprite = game.add.sprite(500, 300, 'youWin');
     winSprite.anchor.setTo(0.5, 0.5);
     winSprite.fixedToCamera = true;
