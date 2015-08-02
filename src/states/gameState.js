@@ -167,14 +167,13 @@ function updateGameState() {
             sprite.animations.play('stand');
         }
     } else {
-if(Math.abs(sprite.body.velocity.y) > 100){charge += 1;}
+if(Math.abs(sprite.body.velocity.y) > 100){charge += 0.4;}
         if (sprite.animations.currentAnim.name !== 'walk') {
             sprite.animations.play('walk', 60, true);
         }
     }
     if(jumper > 0) {jumper--;}
     if(sprite.body.onFloor() && controls.jump.isDown && jumper == 0){
-        charge += Math.random() * 4;
        jumper = 20;
        sprite.body.velocity.y = -700;
        if(sprite.running){
