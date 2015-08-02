@@ -74,7 +74,6 @@ counter.scale.x = 5;
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
     sprite.body.gravity.y = 2000;
 
-    game.camera.follow(sprite);
     layer.resizeWorld();
 
 
@@ -105,6 +104,7 @@ counter.scale.x = 5;
 }
 
 function updateGameState() {
+    game.camera.focusOnXY(sprite.x, sprite.y - 120);
     var rectangle = new Phaser.Rectangle(0,0,32*(charge/70),32);
 
     counter.crop(rectangle);
