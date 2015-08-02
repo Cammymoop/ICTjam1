@@ -89,8 +89,8 @@ counterBackground.scale.y = 0.5;
     game.physics.arcade.collide(sprite, layer);
     testMap.setCollisionBetween(8, 11, true, layer);
     testMap.setCollisionBetween(13, 17, true, layer);
-    testMap.setCollisionBetween(19, 23, true, layer);
-    testMap.setCollisionBetween(26, 29, true, layer);
+    testMap.setCollisionBetween(19, 24, true, layer);
+    testMap.setCollisionBetween(25, 30, true, layer);
 
     sprite.body.maxVelocity.x = 400;
     sprite.body.drag.x = 370;
