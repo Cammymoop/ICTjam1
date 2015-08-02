@@ -338,6 +338,7 @@ function populateBaddies(){
         baddy.update = baddyColide;
         baddy.body.allowGravity = false;
         baddy.animations.add('normal', [1, 1, 1, 1, 1, 0]);
+        baddy.animations.add('hurt', [2, 0]);
         baddy.animations.play('normal', 1, true);
         baddy.health = 3;
         baddy.body.drag.x = 1500;
@@ -351,10 +352,15 @@ function baddyColide(){
 }
 
 function killBaddy(a){
+baddies[a].animations.play('hurt', 1, true);
+game.time.events.add(500, function(){baddyAnim(a);});
 baddies[a].health--;
 if(baddies[a].health <= 0){
   charge = charge + 100;
 baddies[a].kill();}
+}
+function baddyAnim(a){
+baddies[a].animations.play('normal', 1, true);
 }
 
 function bulletColide(){
