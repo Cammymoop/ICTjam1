@@ -9,7 +9,7 @@ var loadImage;
 
 function createPreloader() {
 game.input.keyboard.addCallbacks(this, function () {if(game.state.current === 'preloader'){game.state.start("gameState");}});
-        loadingBar.kill(); 
+        loadingBar.kill();
         loadImage.kill();
         game.stage.backgroundColor = '#ffffff';
         var titleSprite = game.add.sprite(495, 300, 'titleSprite');
@@ -26,6 +26,7 @@ function loadStuff() {
         "use strict";
         game.load.image('titleSprite', 'img/title.png');
         game.load.image('sun', 'img/sun.png');
+        game.load.image('youWin', 'img/youWIN.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/b.png');

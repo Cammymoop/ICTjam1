@@ -67,8 +67,8 @@ ability = 0;
 
     emitter = game.add.emitter(0, 0, 1);
     // TODO: Set start back to normal for production
-    sprite = game.add.sprite(200, 200, 'player');
-    //sprite = game.add.sprite(4950, 200, 'player');
+    //sprite = game.add.sprite(200, 200, 'player');
+    sprite = game.add.sprite(14000, 200, 'player');
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
@@ -136,7 +136,7 @@ counterBackground.scale.y = 0.5;
 }
 
 function updateGameState() {
-if(sprite.body.x > 4400){win();}
+if(sprite.body.x > 14400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
     var rectangle = new Phaser.Rectangle(0,0,135*(charge/70),45);
@@ -309,7 +309,7 @@ function gameOver(){
     sprite.kill();
 }
 function win(){
-
+    var winSprite = game.add.sprite(14400, 816, 'youWin');
 }
 function reset(){
     baddies = [];
