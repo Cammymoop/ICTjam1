@@ -354,7 +354,7 @@ function makeTokens() {
     //baddy.update = baddyColide;
     hoverAbilitySprite.body.allowGravity = false;
 
-    pukeAbilitySprite2 = game.add.sprite(3000, 1000, 'pukeAbilitySprite');
+    pukeAbilitySprite2 = game.add.sprite(4050, 300, 'pukeAbilitySprite');
     pukeAbilitySprite2.scale.setTo(0.5, 0.5);
     game.physics.arcade.enable(pukeAbilitySprite2);
     //baddy.update = baddyColide;
