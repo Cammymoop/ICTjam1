@@ -29,6 +29,9 @@ var counter;
 var counterBackground;
 var gameOverActivated;
 var sfx;
+var music;
+var mutePushed;
+var musicMute;
 
 function createGameState() {
 ability = 0;
@@ -48,6 +51,11 @@ ability = 0;
     sfx.b1 = game.add.audio('bump1');
     sfx.b2 = game.add.audio('bump2');
     sfx.wobble = game.add.audio('wobble');
+
+    music = game.add.sound('bgMusic');
+    music.play('', 0, musicMute ? 0 : 0.8, true);
+    mutePushed = false;
+    musicMute = false;
 
     testMap = game.add.tilemap('testMap');
     testMap.addTilesetImage('all_small', 'all_small');
@@ -116,6 +124,7 @@ counterBackground.scale.y = 0.5;
     controls.right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
     controls.run = game.input.keyboard.addKey(Phaser.Keyboard.X);
     controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    controls.mute = game.input.keyboard.addKey(Phaser.Keyboard.M);
     populateBaddies();
     makeTokens();
     iAmHovering = false;
@@ -135,6 +144,20 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     }
     if(charge > 70) {abilityTrigger(); charge = charge - 70;}
     if(charge < 0) {charge = 0;}
+
+    if (!mutePushed && controls.mute.isDown) {
+        mutePushed = true;
+        if (musicMute) {
+            music.volume = 0.8;
+            musicMute = false;
+        } else {
+            music.volume = 0;
+            musicMute = true;
+        }
+    }
+    if (!controls.mute.isDown) {
+        mutePushed = false;
+    }
 
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
@@ -278,6 +301,7 @@ function win(){
 }
 function reset(){
     baddies = [];
+    music.stop();
     game.state.start("gameState");
 }
 
@@ -297,6 +321,9 @@ ability = 1;
 }
 
 function abilityTrigger(){
+    if (!sprite.alive) {
+        return;
+    }
     if(ability == 0) {
         puke();
     } else if (ability == 1) {

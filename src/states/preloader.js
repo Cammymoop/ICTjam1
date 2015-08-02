@@ -33,6 +33,8 @@ function loadStuff() {
         game.load.audio('bump2', ['sound/Bumbp2.mp3', 'sfx/Bumbp2.ogg']);
         game.load.audio('wobble', ['sound/wobble.mp3', 'sfx/wobble.ogg']);
 
+        game.load.audio('bgMusic', ['sound/Music1.mp3', 'sfx/Music1.ogg']);
+
         var loadingBar = game.add.sprite(104, 280, 'loadBar');
         game.add.sprite(93, 193, 'loadImage');
 
