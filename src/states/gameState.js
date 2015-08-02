@@ -101,6 +101,7 @@ counter.scale.x = 5;
     controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     populateBaddies();
     makeTokens();
+    iAmHovering = false;
 }
 
 function updateGameState() {
