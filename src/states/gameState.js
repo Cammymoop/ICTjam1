@@ -78,6 +78,8 @@ counter.scale.x = 5;
 
 
     emitter.makeParticles('vomit', [0,1,2,3], 200, true, true);
+    emitter.maxParticleScale = 1.8;
+    emitter.minParticleScale = .2;
 
     // Attach the emitter to the sprite
     //sprite.addChild(emitter);
