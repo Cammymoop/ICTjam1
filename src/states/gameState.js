@@ -355,7 +355,7 @@ function bulletDeath(){
 }
 function populateBaddies(){
 
-    var baddy = game.add.sprite(1500, 345, 'enemy');
+    var baddy = game.add.sprite(2000, 410, 'enemy');
         baddy.scale.setTo(0.5, 0.5);
         baddy.anchor.setTo(0.5, 0.5);
         game.physics.arcade.enable(baddy);
@@ -370,7 +370,7 @@ function populateBaddies(){
 baddies.push(baddy);
 }
 function baddyColide(){
-
+if(sprite.body.x > 800) {this.body.velocity.x = -400;}
     if(game.physics.arcade.collide(this, sprite)){gameOver();}
     game.physics.arcade.collide(this, layer);
 }
