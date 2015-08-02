@@ -369,13 +369,13 @@ function endHover(){
 }
 
 function makeTokens() {
-    pukeAbilitySprite = game.add.sprite(1000, 400, 'pukeAbilitySprite');
+    pukeAbilitySprite = game.add.sprite(1000, 410, 'pukeAbilitySprite');
     pukeAbilitySprite.scale.setTo(0.5, 0.5);
     game.physics.arcade.enable(pukeAbilitySprite);
     //baddy.update = baddyColide;
     pukeAbilitySprite.body.allowGravity = false;
 
-    hoverAbilitySprite = game.add.sprite(2000, 400, 'hoverAbilitySprite');
+    hoverAbilitySprite = game.add.sprite(2000, 410, 'hoverAbilitySprite');
     hoverAbilitySprite.scale.setTo(0.5, 0.5);
     game.physics.arcade.enable(hoverAbilitySprite);
     //baddy.update = baddyColide;
