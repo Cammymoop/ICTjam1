@@ -6,6 +6,7 @@ var game = require('../game'),
 var sprite;
 var iAmHovering = false;
 var pukeAbilitySprite;
+var pukeAbilitySprite2;
 var hoverAbilitySprite;
 var pukeAbility = 0;
 var hoverAbility = 0;
@@ -138,6 +139,7 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.physics.arcade.collide(sprite, layer);
     game.physics.arcade.collide(emitter, layer);
     game.physics.arcade.overlap(sprite, pukeAbilitySprite, handlePukeSprite);
+    game.physics.arcade.overlap(sprite, pukeAbilitySprite2, handlePukeSprite);
     game.physics.arcade.overlap(sprite, hoverAbilitySprite, handleHoverSprite);
 
     if (!sprite.running && controls.run.isDown) {
@@ -351,6 +353,12 @@ function makeTokens() {
     game.physics.arcade.enable(hoverAbilitySprite);
     //baddy.update = baddyColide;
     hoverAbilitySprite.body.allowGravity = false;
+
+    pukeAbilitySprite2 = game.add.sprite(3000, 1000, 'pukeAbilitySprite');
+    pukeAbilitySprite2.scale.setTo(0.5, 0.5);
+    game.physics.arcade.enable(pukeAbilitySprite2);
+    //baddy.update = baddyColide;
+    pukeAbilitySprite2.body.allowGravity = false;
 }
 
 function bulletDeath(){
