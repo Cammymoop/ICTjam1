@@ -2,12 +2,18 @@
 
 var game = require('../game'),
   Phaser = require('phaser').Phaser;
+var controls = {};
+var titleSprite;
 
 function createPreloader() {
+        var titleSprite = game.add.sprite(535, 320, 'titleSprite');
+        titleSprite.scale.setTo(.9, .9);
+        titleSprite.anchor.setTo( .5, .5);
 }
 
 function loadStuff() {
         "use strict";
+        game.load.image('titleSprite', 'img/title.png');
         game.load.spritesheet('player', 'img/walk_cycle.png', 122, 180);
         game.load.image('pukeAbilitySprite', 'img/a.png');
         game.load.image('hoverAbilitySprite', 'img/b.png');
@@ -39,10 +45,15 @@ function loadStuff() {
         game.add.sprite(93, 193, 'loadImage');
 
         game.load.setPreloadSprite(loadingBar);
+
+
+        controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function updatePreloader() {
+if(controls.jump.isDown){
     game.state.start("gameState");
+}
 }
 
 var preloader = {
