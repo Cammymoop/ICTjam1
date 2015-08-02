@@ -56,8 +56,8 @@ function createGameState() {
     sprite.anchor.setTo(0.65, 0.5);
     sprite.facing = 1;
 
-    counterBackground = game.add.sprite(0, 0, 'abilityBarBackground');
-    counter = game.add.sprite(0, 0, 'abilityBar');
+    counterBackground = game.add.sprite(3, 3, 'abilityBarBackground');
+    counter = game.add.sprite(5, 5, 'abilityBar');
 
 counter.fixedToCamera = true;
 counterBackground.fixedToCamera = true;
