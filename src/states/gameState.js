@@ -165,7 +165,7 @@ if(sprite.body.x > 8600 && !hasSpike){//8600
     spikeWall.update = spiker;
 }
     if(hasSpike){game.physics.arcade.collide(sprite, spikeWall, spikeCall);}
-if(sprite.body.x > 4400){win();}
+if(sprite.body.x > 14400){win();}
 if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
     game.camera.focusOnXY(sprite.x, sprite.y - 120);
     var rectangle = new Phaser.Rectangle(0,0,135*(charge/70),45);
