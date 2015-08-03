@@ -5,7 +5,7 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   errorHandler = require('errorhandler'),
   methodOverride = require('method-override'),
-  hostname = process.env.HOSTNAME || 'localhost',
+  hostname = 'localhost',
   port = parseInt(process.env.PORT, 10) || 3553;
 
 app.get('/', function serveIndex(req, res) {
