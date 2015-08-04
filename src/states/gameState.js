@@ -7,8 +7,6 @@ var sprite;
 var iAmHovering = false;
 var pukeAbilitySprite, pukeAbilitySprite2, pukeAbilitySprite3;
 var hoverAbilitySprite, hoverAbilitySprite2, hoverAbilitySprite3;
-var pukeAbility = 0;
-var hoverAbility = 0;
 var controls = {};
 var testMap;
 var puker = 1;
@@ -16,14 +14,13 @@ var jumper = 0;
 var layer;
 var grassyLayer;
 var ability = 0;//0 = vomit, 1 = hover. THis is checked in puke() which is general perpose
-var aCounter = 0;//this keeps track of how close we are to triggering an ability.
 var emitter;
 var emitting = false;
 var emitterXvelocity;
 var bgParallax;
 var bgParallax2;
 var baddies = [];
-var charge = 20;
+var charge = 20; //this keeps track of how close we are to triggering an ability.
 var counter;
 var counterBackground;
 var gameOverActivated, gameWinActivated;
@@ -31,7 +28,6 @@ var sfx;
 var music;
 var mutePushed;
 var musicMute = false;
-var sun;
 var healthApple;
 var tookDamage;
 var spikeWall;
@@ -44,7 +40,7 @@ ability = 0;
 
     var bg = game.add.sprite(0, -300, 'bg');
     bg.fixedToCamera = true;
-    sun = game.add.sprite(200, 280, 'sun');
+    var sun = game.add.sprite(200, 280, 'sun');
     sun.anchor.setTo(0.5, 0.5);
     sun.fixedToCamera = true;
     sun.scale.setTo(0.1, 0.1);
@@ -269,13 +265,6 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
         modifyCharge(0.5);
         sprite.body.velocity.y -= 20;
     }
-    //if(puker % 4 == 0){
-    if(pukeAbility > 70) {
-       puke();
-    }
-    if(hoverAbility > 100) {
-        hover()
-    }
 
     bgParallax.cameraOffset.x = (-(game.camera.x/3)) % 1000;
     bgParallax2.cameraOffset.x = (-(game.camera.x/3) % 1000) + 1000;
@@ -286,15 +275,6 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
         //emitter.position = sprite.position;
         emitter.x = sprite.x+10;
         emitter.y = sprite.y;
-    }
-
-    pukeAbility -= 1;
-    if (pukeAbility < 0) {
-        pukeAbility = 0;
-    }
-    hoverAbility -= 1;
-    if (hoverAbility < 0) {
-        hoverAbility = 0;
     }
 
     if(sprite.body.y > 1300){gameOver();}
@@ -374,18 +354,10 @@ function reset(){
 }
 
 function handlePukeSprite(){
-//    pukeAbility += 5;
 ability = 0;
-    if (pukeAbility > 100) {
-        pukeAbility = 100;
-    }
 }
 function handleHoverSprite(){
 ability = 1;
-//    hoverAbility += 5;
-    if (hoverAbility > 1000) {
-        hoverAbility = 1000
-    }
 }
 
 function abilityTrigger(){
