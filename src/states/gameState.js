@@ -3,13 +3,12 @@
 var game = require('../game'),
     Phaser = require('phaser').Phaser;
 
-var sprite;
+var sprite;//our hero, Chuck
 var iAmHovering = false;
 var pukeAbilitySprite, pukeAbilitySprite2, pukeAbilitySprite3;
 var hoverAbilitySprite, hoverAbilitySprite2, hoverAbilitySprite3;
 var controls = {};
 var testMap;
-var puker = 1;
 var jumper = 0;
 var layer;
 var grassyLayer;
@@ -149,7 +148,7 @@ function spikeCall(a, b){
 }
 
 function updateGameState() {
-if(sprite.body.x > 8600 && !hasSpike){//8600
+if(sprite.body.x > 8600 && !hasSpike){
     hasSpike = true;
     spikeWall = game.add.sprite(8200, 280, 'spikeWall');
     spikeWall.anchor.setTo(0.5, 0.5);
@@ -174,7 +173,7 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
         modifyCharge(-0.2);
     }
     if(charge > 70) {abilityTrigger(); modifyCharge(0, true);}
-    if(charge < 0) {charge = 0;}
+    if(charge < 0) {modifyCharge(0, true);}
 
     if (!mutePushed && controls.mute.isDown) {
         mutePushed = true;
@@ -259,7 +258,6 @@ if(sprite.body.velocity.y > 500) {sprite.body.velocity.y = 600;}
        if(sprite.running){
            sprite.body.velocity.y -= 150;
        }
-       puker++;
     }
     else if (controls.jump.isDown && sprite.body.velocity.y < -300){
         modifyCharge(0.5);
@@ -375,7 +373,6 @@ function abilityTrigger(){
 }
 
 function puke(){
-    puker = 1;
         var bullet = game.add.sprite(sprite.x, sprite.y, 'squid');
         if (sprite.facing < 1) {
             bullet.scale.setTo(-0.25, 0.25)
