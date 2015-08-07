@@ -489,7 +489,7 @@ function modifyCharge(value, abs) {
 }
 
 function baddyColide(){
-if(sprite.body.x > 800) {this.body.velocity.x = -400;}
+if(sprite.body.x > this.body.x - 800) {this.body.velocity.x = -400;}
     if(game.physics.arcade.collide(this, sprite)){playerDamage();}
     game.physics.arcade.collide(this, layer);
 }
