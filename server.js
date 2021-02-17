@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + '/release'));
 
 app.use(errorHandler({
   dumpExceptions: true,

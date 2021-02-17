@@ -4,7 +4,7 @@ var gulp = require('gulp');
 
 
 var src = './src/map/*.json',
-  dist = './dist/map';
+  dist = './release/map';
 
 function index() {
   return gulp.src(src)

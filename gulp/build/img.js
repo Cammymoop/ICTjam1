@@ -4,7 +4,7 @@ var gulp = require('gulp');
 
 
 var src = './src/img/*.png',
-  dist = './dist/img';
+  dist = './release/img';
 
 function index() {
   return gulp.src(src)

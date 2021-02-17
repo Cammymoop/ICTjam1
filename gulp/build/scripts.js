@@ -9,7 +9,7 @@ var WebpackDevServer = require("webpack-dev-server");
 
 
 var configFile = 'webpack.config.js',
-  dest = './dist',
+  dest = './release',
   src = './src/**/*.*';
 
 var formatOpts = {
