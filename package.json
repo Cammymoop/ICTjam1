@@ -26,7 +26,7 @@
     "npm": ">=1.4.3"
   },
   "scripts": {
-    "test": ""
+    "build": "gulp build"
   },
   "devDependencies": {
     "gulp": "3.x.x",
