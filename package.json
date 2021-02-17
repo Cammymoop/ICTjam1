@@ -29,7 +29,7 @@
     "build": "gulp build"
   },
   "devDependencies": {
-    "gulp": "3.x.x",
+    "gulp": "4.x.x",
     "gulp-gh-pages": "0.4.x",
     "gulp-task-listing": "1.x.x",
     "gulp-util": "3.x.x",

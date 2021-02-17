@@ -8,4 +8,4 @@
 
 
   gulp.task('help', tasklisting);
-  gulp.task('default', ['help']);
+  gulp.task('default', gulp.series('help'));
