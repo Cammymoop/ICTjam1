@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 
 function deploy() {
   return gulp
-    .src('./dist/**/*')
+    .src('./release/**/*')
     .pipe(ghPages());
 }
 

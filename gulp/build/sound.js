@@ -4,7 +4,7 @@ var gulp = require('gulp');
 
 
 var src = './src/sound/*.+(mp3|ogg)',
-  dist = './dist/sound';
+  dist = './release/sound';
 
 function index() {
   return gulp.src(src)

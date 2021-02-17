@@ -8,4 +8,4 @@ require('./build/map');
 require('./build/sound');
 
 
-gulp.task('build', ['build-scripts', 'build-index', 'build-img', 'build-sound', 'build-map']);
+gulp.task('build', gulp.series('build-scripts', 'build-index', 'build-img', 'build-sound', 'build-map'));

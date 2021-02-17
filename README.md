@@ -15,7 +15,7 @@ Install all the node modules
 ```sh
 npm install
 
-gulp build
+npm run build
 
 node server
 ```
